@@ -1,7 +1,7 @@
 from base import wraps
 
 _panel_template = """
-<div class="panel panel-default">
+<div class="panel {klass}">
   {heading}
   <div class="panel-body">
     {content}
@@ -18,7 +18,7 @@ _panel_heading_template = """
 """
 
 
-def panel(title=None):
+def panel(title=None, klass="panel-default"):
     def decorator(func):
         @wraps(func)
         def inner(*args, **kwargs):
@@ -26,6 +26,6 @@ def panel(title=None):
             if title:
                 heading = _panel_heading_template.format(title=title)
             content = func(*args, **kwargs)
-            return _panel_template.format(content=content, heading=heading)
+            return _panel_template.format(content=content, heading=heading, klass=klass)
         return inner
     return decorator

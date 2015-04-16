@@ -24,7 +24,12 @@ widget = hubs.models.Widget(plugin='rules', index=1,
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=2)
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=0, left=True)
+widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
+                            _config=json.dumps({
+                                'text': 'This is a sticky note.',
+                            }))
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
 hub.widgets.append(widget)
 
 session.commit()
