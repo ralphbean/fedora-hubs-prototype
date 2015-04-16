@@ -1,6 +1,15 @@
+import os
+
+import flask
+
 import hubs.models
 
-session = hubs.models.init('sqlite:////var/tmp/hubs.db', True, True)
+app = flask.Flask(__name__)
+app.config.from_object('hubs.default_config')
+if 'HUBS_CONFIG' in os.environ:
+    app.config.from_envvar('HUBS_CONFIG')
+
+session = hubs.models.init(app.config['DB_URL'], True, True)
 
 hub = hubs.models.Hub(name='lol')
 session.add(hub)
