@@ -1,3 +1,4 @@
+import json
 import os
 
 import flask
@@ -14,14 +15,16 @@ session = hubs.models.init(app.config['DB_URL'], True, True)
 hub = hubs.models.Hub(name='designteam', summary='The Fedora Design Team')
 session.add(hub)
 
-widget = hubs.models.Widget(plugin='dummy', index=0)
-session.add(hub)
+widget = hubs.models.Widget(plugin='stats', index=0)
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=1)
-session.add(hub)
+widget = hubs.models.Widget(plugin='rules', index=1,
+                            _config=json.dumps({
+                                'link': 'http://threebean.org'
+                            }))
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='dummy', index=2)
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=0, left=True)
-session.add(hub)
 hub.widgets.append(widget)
 
 session.commit()

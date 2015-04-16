@@ -7,5 +7,5 @@ import hubs.validators as validators
 @argument(name="text", default="Lorem ipsum dolor...",
           validator=validators.text,
           help="Some dummy text to display.")
-def render(request, session, text):
+def render(request, session, widget, text):
     return text

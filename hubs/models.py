@@ -88,10 +88,11 @@ class Hub(BASE):
 
     #fas_group = sa.Column(sa.String(32), nullable=False)
 
-    #members = ...
-    #subscribers = ...
-    #owners = ...
-
+    # This is just some silly dev data.  eventually, connect this
+    # to real database data.
+    owners = ['tatica', 'gnokii', 'duffy', 'ryanlerch']
+    members = ['ralph', 'sadin', 'sayan'] + owners
+    subscribers = []
 
     @property
     def right_width(self):
@@ -150,7 +151,7 @@ class Widget(BASE):
 
     def render(self, request, session):
         plugin = widgets.registry[self.plugin]
-        return plugin(request, session, **self.config)
+        return plugin(request, session, self, **self.config)
 
 
 class User(BASE):
