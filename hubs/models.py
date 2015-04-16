@@ -82,6 +82,11 @@ class Hub(BASE):
     name = sa.Column(sa.String(50), primary_key=True)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
     widgets = relation('Widget', backref=backref('hub'))
+    left_width = sa.Column(sa.Integer, nullable=False, default=8)
+
+    @property
+    def right_width(self):
+        return 12 - self.left_width
 
     @property
     def left_widgets(self):

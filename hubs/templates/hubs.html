@@ -4,21 +4,23 @@
 <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
 </head>
 <body>
-<div class="row">
-  <div class="col-md-8">
-    {% for widget in hub.left_widgets %}
-    <div class="row">
-      {{ widget.render(request, session) }}
+<div class="container">
+  <div class="row">
+    <div class="col-md-{{ hub.left_width }}">
+      {% for widget in hub.left_widgets %}
+      <div class="row">
+        {{ widget.render(request, session) | safe }}
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 
-  <div class="col-md-4">
-    {% for widget in hub.right_widgets %}
-    <div class="row">
-      {{ widget.render(request, session) }}
+    <div class="col-md-{{ hub.right_width }}">
+      {% for widget in hub.right_widgets %}
+      <div class="row">
+        {{ widget.render(request, session) | safe }}
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
 </div>
 </body>
