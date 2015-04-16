@@ -11,7 +11,7 @@ if 'HUBS_CONFIG' in os.environ:
 
 session = hubs.models.init(app.config['DB_URL'], True, True)
 
-hub = hubs.models.Hub(name='lol')
+hub = hubs.models.Hub(name='designteam', summary='The Fedora Design Team')
 session.add(hub)
 
 widget = hubs.models.Widget(plugin='dummy', index=0)

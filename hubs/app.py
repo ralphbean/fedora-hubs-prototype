@@ -18,6 +18,7 @@ def index():
 
 
 @app.route('/<hub_name>')
+@app.route('/<hub_name>/')
 def hubs_view(hub_name):
     session = models.init(app.config['DB_URL'])
     hub = session.query(models.Hub)\

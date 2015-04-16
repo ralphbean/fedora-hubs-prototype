@@ -81,9 +81,17 @@ def init(db_url, debug=False, create=False):
 class Hub(BASE):
     __tablename__ = 'hubs'
     name = sa.Column(sa.String(50), primary_key=True)
+    summary = sa.Column(sa.String(128))
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
     widgets = relation('Widget', backref=backref('hub'))
     left_width = sa.Column(sa.Integer, nullable=False, default=8)
+
+    #fas_group = sa.Column(sa.String(32), nullable=False)
+
+    #members = ...
+    #subscribers = ...
+    #owners = ...
+
 
     @property
     def right_width(self):

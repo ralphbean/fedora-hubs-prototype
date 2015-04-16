@@ -1,9 +1,38 @@
 <html>
 <head>
-<title>{{ hub.name }}</title>
-<link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
+  <title>{{ hub.name }}</title>
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #d1d3d4;
+    }
+    .panel {
+      border-radius: 0px;
+    }
+    .header {
+      color: #ffffff;
+      background-color: #3c6eb4;
+      width: 100%;
+    }
+    .padded {
+      padding: 5px;
+    }
+    .medium-wide {
+      width: 250px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
 </head>
 <body>
+<div class="header">
+  <div class="padded center-block medium-wide">
+    <h3>{{hub.name}}</h3>
+    <h5>{{hub.summary}}</h5>
+  </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-md-{{ hub.left_width }}">
