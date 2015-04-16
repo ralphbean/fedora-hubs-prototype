@@ -1,3 +1,4 @@
+from base import wraps
 
 _panel_template = """
 <div class="panel panel-default">
@@ -16,15 +17,15 @@ _panel_heading_template = """
   </div> <!-- end panel-heading -->
 """
 
+
 def panel(title=None):
     def decorator(func):
+        @wraps(func)
         def inner(*args, **kwargs):
             heading = ''
             if title:
                 heading = _panel_heading_template.format(title=title)
             content = func(*args, **kwargs)
             return _panel_template.format(content=content, heading=heading)
-
-        inner.widget_arguments = getattr(func, 'widget_arguments', [])
         return inner
     return decorator
