@@ -24,5 +24,7 @@ def panel(title=None):
                 heading = _panel_heading_template.format(title=title)
             content = func(*args, **kwargs)
             return _panel_template.format(content=content, heading=heading)
+
+        inner.widget_arguments = getattr(func, 'widget_arguments', [])
         return inner
     return decorator

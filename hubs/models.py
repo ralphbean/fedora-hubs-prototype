@@ -22,6 +22,7 @@
 
 
 import datetime
+import json
 import logging
 
 import sqlalchemy as sa
@@ -105,18 +106,34 @@ class Hub(BASE):
             'name': self.name,
         }
 
+def _config_default(context):
+    plugin_name = context.current_parameters['plugin']
+    plugin = widgets.registry[plugin_name]
+
+    print plugin.widget_arguments
+    return json.dumps(dict([
+        (arg.name, arg.default) for arg in plugin.widget_arguments
+    ]))
+
 
 class Widget(BASE):
     __tablename__ = 'widgets'
     idx = sa.Column(sa.Integer, primary_key=True)
-    plugin = sa.Column(sa.String(50))
+    plugin = sa.Column(sa.String(50), nullable=False)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
     hub_id = sa.Column(sa.String(50), sa.ForeignKey('hubs.name'))
-    #config = ...
-    config = 'lol'
+    _config = sa.Column(sa.String(256), default=_config_default)
 
     index = sa.Column(sa.Integer, nullable=False)
     left = sa.Column(sa.Boolean, nullable=False, default=False)
+
+    @property
+    def config(self):
+        return json.loads(self._config)
+
+    @config.setter
+    def config_setter(self, config):
+        self._config = json.dumps(config)
 
     def __json__(self, reify=False):
         return {
@@ -124,7 +141,8 @@ class Widget(BASE):
         }
 
     def render(self, request, session):
-        return widgets.registry[self.plugin](request, session, self.config)
+        plugin = widgets.registry[self.plugin]
+        return plugin(request, session, **self.config)
 
 
 class User(BASE):
