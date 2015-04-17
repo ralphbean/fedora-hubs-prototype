@@ -14,7 +14,7 @@ rules_template = jinja2.Template("""
   {% endif %}
   <p class="small-heading">group owners</p>
   {% for owner in owners %}
-    <span><img class="circle" src="{{owners[owner]}}"/> {{owner}}</span>
+    <span><img class="img-circle" src="{{owners[owner]}}"/> {{owner}}</span>
   {% endfor %}
 </div>
 <style>
