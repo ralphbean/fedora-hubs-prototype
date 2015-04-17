@@ -14,7 +14,7 @@ if 'HUBS_CONFIG' in os.environ:
 
 @app.route('/')
 def index():
-    return "hi there"
+    return flask.redirect('/designteam')  # TODO - remove this later
 
 
 @app.route('/<hub_name>')
