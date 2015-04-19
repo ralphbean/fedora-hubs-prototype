@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+""" Populate the hubs db with some dev data. """
+
 import json
 import os
 
