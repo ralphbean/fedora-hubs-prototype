@@ -5,8 +5,6 @@ import sticky
 
 from base import AGPLv3
 
-import flask
-
 registry = {
     'dummy': dummy,
     'stats': stats,
