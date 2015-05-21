@@ -3,7 +3,8 @@ import functools
 import hashlib
 import urllib
 
-Argument = collections.namedtuple('Argument', ('name', 'default', 'validator', 'help'))
+Argument = collections.namedtuple(
+    'Argument', ('name', 'default', 'validator', 'help'))
 
 
 def argument(name, default, validator, help):
