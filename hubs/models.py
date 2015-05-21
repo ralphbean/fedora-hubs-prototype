@@ -150,8 +150,8 @@ class Widget(BASE):
         }
 
     def render(self, request, session):
-        plugin = widgets.registry[self.plugin]
-        return plugin(request, session, self, **self.config)
+        module = widgets.registry[self.plugin]
+        return widgets.render(module, request, session, self, **self.config)
 
 
 class User(BASE):

@@ -6,7 +6,8 @@ from hubs.widgets.chrome import panel
 from hubs.widgets.base import argument, avatar
 from hubs import validators
 
-rules_template = jinja2.Template("""
+chrome = panel()
+template = jinja2.Template("""
 <div class="rules-container">
   {% if link %}
   <p class="small-heading">community rules</p>
@@ -35,11 +36,10 @@ rules_template = jinja2.Template("""
 </style>
 """)
 
-@panel()
 @argument(name='link', default=None,
           validator=validators.link,
           help="Link to the community rules and guidelines")
-def render(request, session, widget, link):
+def data(request, session, widget, link):
     owners = widget.hub.owners
     owners = ordereddict([(o, avatar(o)) for o in owners])
-    return rules_template.render(owners=owners, link=link)
+    return dict(owners=owners, link=link)
