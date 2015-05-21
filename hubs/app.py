@@ -59,10 +59,21 @@ def get_widget(session, hub, idx):
 
 @app.route('/<hub>/<idx>')
 @app.route('/<hub>/<idx>/')
-def widget(hub, idx):
+def widget_render(hub, idx):
     session = models.init(app.config['DB_URL'])
     widget = get_widget(session, hub, idx)
-    return widget.render(session, hub, idx)
+    return widget.render(flask.request, session)
+
+
+@app.route('/<hub>/<idx>/json')
+@app.route('/<hub>/<idx>/json/')
+def widget_json(hub, idx):
+    session = models.init(app.config['DB_URL'])
+    widget = get_widget(session, hub, idx)
+    from hubs.widgets import registry
+    module = registry[widget.plugin]
+    data = module.data(flask.request, session, widget, **widget.config)
+    return flask.jsonify(data)
 
 
 @app.route('/source/<name>')
