@@ -16,3 +16,40 @@ Try running it with::
     $ PYTHONPATH=. python hubs/app.py  # To run the dev server
 
 And then navigate to http://localhost:5000/designteam
+
+Internal design
+---------------
+
+There's no authn or user information at all currently.  There are only:
+
+- widgets
+- hubs (which are just collections of widgets)
+
+How things are currently (they don't have to stay this way):
+
+You write a new widget in the ``hubs/widgets/`` directory and must declare it
+in the registry dict in ``hubs/widgets/__init__.py``.
+
+In order to be valid, a widget must have:
+
+- A ``data(request, session, widgets, **kwargs)`` function that returns a
+  jsonifiable dict of data.  This will get cached -- more on that later.
+- A ``template`` object that is a jinja2 template for that widget.
+- Optionally, a ``chrome`` decorator.
+
+This isn't implemented yet, but they're going to need:
+
+- A ``invalidate(session, message)`` function that will be used to
+  *potentially* invalidate the widget's cache. That function will get called by
+  a backend daemon listening for fedmsg messages so when you update your group
+  memberships in FAS, a fedmsg message hits the fedora-hubs backend and it
+  nukes/refreshes a lookup value in memcached (or some other store).
+
+Furthermore:
+
+- The template per-widget is currently held and rendered *server-side* with
+  jinja2.  This is how all our apps do it, more or less.
+
+  We might want to consider using handlebars.js for our templates instead and
+  rendering all of the widgets asynchronously on the client.  It could be cool,
+  but is new-ground for our team.
