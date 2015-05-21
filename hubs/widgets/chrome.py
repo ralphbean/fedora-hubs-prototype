@@ -1,21 +1,28 @@
 from base import wraps
 
-_panel_template = """
-<div class="panel {klass}">
-  {heading}
+import jinja2
+
+_panel_template = jinja2.Template("""
+<div class="panel {{klass}}">
+  {{heading}}
+  <div class="pull-right widget-buttons">
+    <!-- the AGPLv3 wrapper puts the source url in all responses -->
+    <a href="{{source_url}}"><span class="glyphicon glyphicon-eye-open"></span></a>
+    <a href="#"><span class="glyphicon glyphicon-edit"></span></a>
+  </div>
   <div class="panel-body">
-    {content}
+    {{content}}
   </div> <!-- end panel-body -->
 </div> <!-- end panel -->
-"""
+""")
 
-_panel_heading_template = """
+_panel_heading_template = jinja2.Template("""
   <div class="panel-heading">
     <h3 class="panel-title">
-      {title}
+      {{title}}
     </h3>
   </div> <!-- end panel-heading -->
-"""
+""")
 
 
 def panel(title=None, klass="panel-default"):
@@ -24,8 +31,12 @@ def panel(title=None, klass="panel-default"):
         def inner(*args, **kwargs):
             heading = ''
             if title:
-                heading = _panel_heading_template.format(title=title)
+                heading = _panel_heading_template.render(title=title)
             content = func(*args, **kwargs)
-            return _panel_template.format(content=content, heading=heading, klass=klass)
+            return _panel_template.render(
+                content=content,
+                heading=heading,
+                klass=klass,
+                **kwargs)
         return inner
     return decorator

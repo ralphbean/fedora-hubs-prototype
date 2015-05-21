@@ -65,14 +65,12 @@ def widget(hub, idx):
     return widget.render(session, hub, idx)
 
 
-@app.route('/<hub>/<idx>/source')
-@app.route('/<hub>/<idx>/source/')
-def widget_source(hub, idx):
+@app.route('/source/<name>')
+@app.route('/source/<name>/')
+def widget_source(name):
     from hubs.widgets import registry
     base = '/hubs/'
-    session = models.init(app.config['DB_URL'])
-    widget = get_widget(session, hub, idx)
-    fname = base + registry[widget.plugin].__file__.split(base, 1)[1][:-1]
+    fname = base + registry[name].__file__.split(base, 1)[1][:-1]
     return flask.redirect(SOURCE_URL + fname)
 
 

@@ -3,6 +3,8 @@ import functools
 import hashlib
 import urllib
 
+import flask
+
 Argument = collections.namedtuple(
     'Argument', ('name', 'default', 'validator', 'help'))
 
@@ -16,6 +18,19 @@ def argument(name, default, validator, help):
         inner.widget_arguments.append(Argument(name, default, validator, help))
         return inner
     return decorator
+
+
+def AGPLv3(name):
+    def decorator(func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            result = func(*args, **kwargs)
+            result['source_url'] = flask.url_for('widget_source', name=name)
+            return result
+
+        return inner
+    return decorator
+
 
 def wraps(original):
     @functools.wraps(original)

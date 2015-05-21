@@ -3,6 +3,10 @@ import stats
 import rules
 import sticky
 
+from base import AGPLv3
+
+import flask
+
 registry = {
     'dummy': dummy,
     'stats': stats,
@@ -31,6 +35,9 @@ def prepare_registry(registry):
         module.render = module.template.render
         if hasattr(module, 'chrome'):
             module.render = module.chrome(module.render)
+
+        # Put source links in all API results
+        module.data = AGPLv3(name)(module.data)
 
         # TODO -- wrap a cache layer around the data functions
         #         do this only if the module provides a cache invalidator
