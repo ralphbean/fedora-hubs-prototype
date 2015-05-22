@@ -118,11 +118,8 @@ class Hub(BASE):
 def _config_default(context):
     plugin_name = context.current_parameters['plugin']
     plugin = widgets.registry[plugin_name]
-
-    print plugin.widget_arguments
-    return json.dumps(dict([
-        (arg.name, arg.default) for arg in plugin.widget_arguments
-    ]))
+    arguments = getattr(plugin, 'widget_arguments', [])
+    return json.dumps(dict([(arg.name, arg.default) for arg in arguments]))
 
 
 class Widget(BASE):
