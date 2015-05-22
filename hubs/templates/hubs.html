@@ -30,6 +30,18 @@
       padding: 5px;
       /* TODO -- lots more nice styling here... */
     }
+    .panel {
+      visibility: hidden;
+      max-height: 0px;
+      overflow: hidden;
+      transition: max-height 0.4s;
+    }
+
+    .panel-visible {
+      visibility: visible;
+      max-height: 400px;
+    }
+
   </style>
 </head>
 <body>
@@ -65,6 +77,9 @@ $.each(widgets, function(i, widget) {
       dataType: 'html',
       success: function(html) {
         $('#widget-' + widget).html(html);
+        setTimeout(function() {
+          $('#widget-' + widget + ' .panel').toggleClass('panel-visible');
+        }, 100);
       },
       error: function() {
         console.log('error');
