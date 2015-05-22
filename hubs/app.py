@@ -13,7 +13,7 @@ app = flask.Flask(__name__)
 SOURCE_URL = 'https://github.com/ralphbean/fedora-hubs-prototype/blob/develop'
 
 
-app.config.from_object('default_config')
+app.config.from_object('hubs.default_config')
 if 'HUBS_CONFIG' in os.environ:
     app.config.from_envvar('HUBS_CONFIG')
 
