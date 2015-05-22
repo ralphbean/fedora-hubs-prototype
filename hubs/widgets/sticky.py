@@ -1,5 +1,5 @@
-from chrome import panel
-from base import argument
+from hubs.widgets.chrome import panel
+from hubs.widgets.base import argument
 
 import jinja2
 

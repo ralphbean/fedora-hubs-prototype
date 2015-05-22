@@ -36,7 +36,7 @@ from sqlalchemy.orm import backref
 import fedmsg
 import fedmsg.utils
 
-import widgets
+import hubs.widgets
 
 
 class HubsBase(object):
@@ -117,8 +117,8 @@ class Hub(BASE):
 
 def _config_default(context):
     plugin_name = context.current_parameters['plugin']
-    plugin = widgets.registry[plugin_name]
-    arguments = getattr(plugin, 'widget_arguments', [])
+    plugin = hubs.widgets.registry[plugin_name]
+    arguments = getattr(plugin.data, 'widget_arguments', [])
     return json.dumps(dict([(arg.name, arg.default) for arg in arguments]))
 
 
@@ -147,8 +147,9 @@ class Widget(BASE):
         }
 
     def render(self, request, session):
-        module = widgets.registry[self.plugin]
-        return widgets.render(module, request, session, self, **self.config)
+        module = hubs.widgets.registry[self.plugin]
+        render = hubs.widgets.render
+        return render(module, request, session, self, **self.config)
 
 
 class User(BASE):

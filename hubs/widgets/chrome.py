@@ -1,4 +1,4 @@
-from base import wraps
+from hubs.widgets.base import wraps
 
 import jinja2
 

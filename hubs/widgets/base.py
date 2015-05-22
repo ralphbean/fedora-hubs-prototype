@@ -1,9 +1,9 @@
 import collections
 import functools
 import hashlib
-import urllib
 
 import flask
+from six.moves import urllib_parse
 
 Argument = collections.namedtuple(
     'Argument', ('name', 'default', 'validator', 'help'))
@@ -43,7 +43,7 @@ def wraps(original):
 
 def avatar(username, size=32):
     openid = 'http://%s.id.fedoraproject.org/' % username
-    query = urllib.urlencode({'s': size, 'd': 'retro'})
-    hash = hashlib.sha256(openid).hexdigest()
+    query = urllib_parse.urlencode({'s': size, 'd': 'retro'})
+    hash = hashlib.sha256(openid.encode('utf-8')).hexdigest()
     template = "https://seccdn.libravatar.org/avatar/%s?%s"
     return template % (hash, query)

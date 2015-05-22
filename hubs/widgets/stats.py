@@ -1,4 +1,4 @@
-from chrome import panel
+from hubs.widgets.chrome import panel
 
 import jinja2
 
