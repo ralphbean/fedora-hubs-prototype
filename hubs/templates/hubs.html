@@ -1,7 +1,6 @@
 <html>
 <head>
   <title>{{ hub.name }}</title>
-  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
   <style>
     body {
       background-color: #d1d3d4;
@@ -44,20 +43,34 @@
   <div class="row">
     <div class="col-md-{{ hub.left_width }}">
       {% for widget in hub.left_widgets %}
-      <div class="row">
-        {{ widget.render(request, session) | safe }}
-      </div>
+      <div id="widget-{{ widget.idx }}" class="row"></div>
       {% endfor %}
     </div>
 
     <div class="col-md-{{ hub.right_width }}">
       {% for widget in hub.right_widgets %}
-      <div class="row">
-        {{ widget.render(request, session) | safe }}
-      </div>
+      <div id="widget-{{ widget.idx }}" class="row"></div>
       {% endfor %}
     </div>
   </div>
 </div>
-</body>
-</html>
+
+<link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
+<script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}"></script>
+<script>
+var widgets = [{% for widget in hub.widgets %}'{{ widget.idx }}',{% endfor %}];
+$.each(widgets, function(i, widget) {
+    $.ajax({
+      url: widget,
+      dataType: 'html',
+      success: function(html) {
+        $('#widget-' + widget).html(html);
+      },
+      error: function() {
+        console.log('error');
+        console.trace();
+      },
+    });
+});
+</script>
+</body></html>
