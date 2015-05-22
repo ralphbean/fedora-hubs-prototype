@@ -3,7 +3,7 @@ from hubs.widgets import stats
 from hubs.widgets import rules
 from hubs.widgets import sticky
 
-from hubs.widgets.base import AGPLv3
+from hubs.widgets.base import AGPLv3, smartcache
 
 registry = {
     'dummy': dummy,
@@ -52,9 +52,9 @@ def prepare_registry(registry):
         # Put source links in all API results
         module.data = AGPLv3(name)(module.data)
 
-        # TODO -- wrap a cache layer around the data functions
-        #         do this only if the module provides a cache invalidator
-        #         and warn in the logs if there's not one present?
+        # Wrap the data functions in a cache layer to be invalidated by fedmsg
+        module.data = smartcache(module)(module.data)
+
 
 validate_registry(registry)
 prepare_registry(registry)
