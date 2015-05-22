@@ -62,6 +62,13 @@ def get_widget(session, hub, idx):
 def widget_render(hub, idx):
     session = models.init(app.config['DB_URL'])
     widget = get_widget(session, hub, idx)
+
+    # Make this artificially slow for development...
+    import random, time
+    s = (random.random() * 3) + 1
+    print(widget.plugin, "sleeping artificially for", s)
+    time.sleep(s)
+
     return widget.render(flask.request, session)
 
 
