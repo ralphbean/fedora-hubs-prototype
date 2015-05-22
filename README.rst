@@ -1,10 +1,13 @@
 Hacking
 -------
 
+Hubs should work on python2 **and** python3, so let's default to python3 and
+see how that goes.
+
 Setup a python virtualenv::
 
     $ sudo yum install python-virtualenvwrapper
-    $ mkvirtualenv hubs
+    $ mkvirtualenv --python=$(which python3) hubs
 
 Install the dependencies from PyPI::
 
@@ -12,8 +15,8 @@ Install the dependencies from PyPI::
 
 Try running it with::
 
-    $ PYTHONPATH=. python populate.py  # To create the db
-    $ PYTHONPATH=. python hubs/app.py  # To run the dev server
+    $ PYTHONPATH=. python3 populate.py  # To create the db
+    $ PYTHONPATH=. python3 hubs/app.py  # To run the dev server
 
 And then navigate to http://localhost:5000/designteam
 
