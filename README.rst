@@ -86,7 +86,7 @@ Still more proposals:
 A picture is worth...
 ---------------------
 
-.. figure:: fedora-hubs-prototype/raw/develop/docs/diagram.png
+.. figure:: https://raw.githubusercontent.com/ralphbean/fedora-hubs-prototype/develop/docs/diagram.png
    :scale: 50 %
    :alt: A diagram of component interactions
 
