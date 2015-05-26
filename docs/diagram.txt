@@ -3,12 +3,12 @@
                                             +------------------------------------------>| (built from HTML and JS |
                                             |                                           | served by the wsgi app) |
                                             |                                           +-------------------------+
-                                            |                                                       ^
-                                            |                                                       |
-                        +--+--------------------+---+                                               | initial page load
-                        |  | EventSource server |   |     /-----------------------+                 | and ajax requests
-                        |  |                    |   |     |{s} memcached          |                 |
-                        |  |                    |   |     |  (we store the data   |                 |
+                                            |                                             ^                     |
+                                            |                                             |                     |
+                        +--+--------------------+---+                                     | initial page load   | configuration changes
+                        |  | EventSource server |   |     /-----------------------+       | and ajax requests   | to widgets and hubs
+                        |  |                    |   |     |{s} memcached          |       |                     |
+                        |  |                    |   |     |  (we store the data   |       |                     V
                         |  +--------------------+   |     |  for widgets here     |     +--------------------------+
                         |                           |     |  and rebuild it       |---->|                          |
                         |                           |---->|  as necessary)        |<----|                          |
