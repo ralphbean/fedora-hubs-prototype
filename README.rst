@@ -83,15 +83,18 @@ Still more proposals:
   we can emit events over EventSource to tell only *those* widgets on any
   connected clients to redraw themselves.
 
+As an aside, it became clear to me when making the diagram in the next section
+that, if we use handlebars.js and get rid of the server-side template
+rendering, then 1) the data returned by AJAX requests at page load and 2) the
+data pushed by the EventSource server can be *the exact same data*.  It will
+simplify and streamline the responsibilities of the pieces if the backend is
+worried *only* about these per-widget JSON responses.
+
 A picture is worth...
 ---------------------
 
-Aside, it became clear to me when making the diagram below that, if we use
-handlebars.js and get rid of the server-side template rendering, then 1) the
-data returned by AJAX requests at page load and 2) the data pushed by the
-EventSource server can be *the exact same data*.  It will simplify and
-streamline the responsibilities of the pieces if the backend is worried *only*
-about these per-widget JSON responses.
+This is more "proposal" territory.  None of this is implemented, but here are
+some more details on how the whole thing should work together.
 
 .. figure:: https://raw.githubusercontent.com/ralphbean/fedora-hubs-prototype/develop/docs/diagram.png
    :scale: 50 %
