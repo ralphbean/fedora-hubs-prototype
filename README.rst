@@ -82,3 +82,12 @@ Still more proposals:
   to see which widgets' caches should be refreshed, and once they are refreshed
   we can emit events over EventSource to tell only *those* widgets on any
   connected clients to redraw themselves.
+
+A picture is worth...
+---------------------
+
+.. figure:: fedora-hubs-prototype/raw/develop/docs/diagram.png
+   :scale: 50 %
+   :alt: A diagram of component interactions
+
+   A diagram of component interactions
