@@ -127,7 +127,7 @@ Later, what happens when a *trac ticket* is filed that should show up in some wi
   payload so the clients can immediately redraw without bothering to re-query
   the wsgi app.
 
-What happens when the user navigates to the *design team* hub and
+What happens when the user is viewing the *design team* hub and
 simultaneously, an admin *changes the configuration of a widget on that page*?
 
 - Changing the configuration results in a HTTP POST to the wsgi app.
