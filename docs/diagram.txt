@@ -1,0 +1,27 @@
+                                                     push events to clients             +-------------------------+
+                                                     as they occur                      | web client              |
+                                            +------------------------------------------>| (built from HTML and JS |
+                                            |                                           | served by the wsgi app) |
+                                            |                                           +-------------------------+
+                                            |                                                       ^
+                                            |                                                       |
+                        +--+--------------------+---+                                               | initial page load
+                        |  | EventSource server |   |     /-----------------------+                 | and ajax requests
+                        |  |                    |   |     |{s} memcached          |                 |
+                        |  |                    |   |     |  (we store the data   |                 |
+                        |  +--------------------+   |     |  for widgets here     |     +--------------------------+
+                        |                           |     |  and rebuild it       |---->|                          |
+                        |                           |---->|  as necessary)        |<----|                          |
+                        | hubs backend              |     +-----------------------/     |  hubs wsgi app           |
+                        | (a fedmsg-hub daemon      |                                   |  (the frontend that      |
+----------------------->| with a FedoraHubsConsumer |                                   |  serves what the users   |
+     ^  fedmsg          | plugin)                   |     +-----------------------+     |  see)                    |
+     |  (fas changes,   |                           |<----|{s} postgres           |<----|                          |
+     |  trac tickets,   |                           |     |  (we store the config |     +--------------------------+
+     |  etc...)         +---------------------------+     |  for widgets/hubs     |             |
+     |                                                    |  here)                |             |
+     |                                                    +-----------------------+             |
+     |                                                                                          |
+     |                                                                                          |
+     +------------------------------------------------------------------------------------------+
+                            config changes to hubs/widgets, via fedmsg
