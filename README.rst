@@ -86,8 +86,60 @@ Still more proposals:
 A picture is worth...
 ---------------------
 
+Aside, it became clear to me when making the diagram below that, if we use
+handlebars.js and get rid of the server-side template rendering, then 1) the
+data returned by AJAX requests at page load and 2) the data pushed by the
+EventSource server can be *the exact same data*.  It will simplify and
+streamline the responsibilities of the pieces if the backend is worried *only*
+about these per-widget JSON responses.
+
 .. figure:: https://raw.githubusercontent.com/ralphbean/fedora-hubs-prototype/develop/docs/diagram.png
    :scale: 50 %
    :alt: A diagram of component interactions
 
    A diagram of component interactions
+
+Let's talk through how data will flow through the system by asking *what
+happens when a user requsts their main hubs page*:
+
+- The user requests the page and the wsgi app responds with some barebones HTML
+  and enough javascript to get off the ground.
+- The user's browser runs javascript that *subscribes* it to the EventSource server.
+- The user's browser runs that javascript, which requests data for each of the
+  widgets defined on the page.
+- The wsgi app receives those requests and checks to see if the data for any of
+  them is *cached in memcached*.  If it is, then it is returned.  If not, then
+  the wsgi app executes the ``data(...)`` function of that widget to get the
+  response ready.  It is stuffed in memcached for later access and returned.
+- The client renders widgets as the data for each of its requests comes back.
+
+Later, what happens when a *trac ticket* is filed that should show up in some widget on their page?
+
+- The ticket is updated on fedorahosted.org and a fedmsg message is fired.
+- That is received by the hubs backend, which looks up *all* the cached
+  responses that should be invalidated by that event (there is a widget on
+  mizmo's page, threebean's page, and on the design hub that should all get
+  fresh data because of this change).
+- All of those widgets get their cached data nuked.
+- All of those widgets get their cached data rebuilt by calling ``data(...)`` on them.
+- An EventSource event is fired off for any listening clients that *new data is
+  available for widgets X, Y, and Z*.  The data is included in the EventSource
+  payload so the clients can immediately redraw without bothering to re-query
+  the wsgi app.
+
+What happens when the user navigates to the *design team* hub and
+simultaneously, an admin *changes the configuration of a widget on that page*?
+
+- Changing the configuration results in a HTTP POST to the wsgi app.
+- The configuration is changed accordingly in the postgres database.
+- A fedmsg message is fired off indicating that *the configuration for widget X
+  has changed*.
+- The wsgi app responds 200 OK to the admin.
+- Meanwhile, that fedmsg message is received by the backend which:
+- ...looks up the cache key for *widget X with the old configuration* and nukes
+  it the cached data.
+- ...looks up the cache key for *widget X with the new configuration* and
+  builds the cached data by calling ``data(...)`` on the widget.
+- An EventSource event is fired off which gets recieved by everyone looking at
+  the *design team hub*.  The widget on their pages gets redrawn with data from
+  the EventSource event.
