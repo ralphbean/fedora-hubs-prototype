@@ -13,7 +13,9 @@ config = fedmsg.config.load_config()
 cache_defaults = {
     "backend": "dogpile.cache.dbm",
     "expiration_time": 1,  # Expire every 1 second, for development
-    "arguments": {"filename": "/var/tmp/fedora-hubs-cache.dbm"},
+    "arguments": {
+        "filename": "/var/tmp/fedora-hubs-cache.db",
+    },
 }
 cache = dogpile.cache.make_region()
 cache.configure(**config.get('fedora-hubs.cache', cache_defaults))
