@@ -80,7 +80,14 @@ def widget_json(hub, idx):
     from hubs.widgets import registry
     module = registry[widget.plugin]
     data = module.data(flask.request, session, widget, **widget.config)
-    return flask.jsonify(data)
+    response = flask.jsonify(data)
+
+    # We don't actually need these two headers.  Just messing around.
+    response.headers['X-fedora-hubs-hub-name'] = hub
+    response.headers['X-fedora-hubs-widget-id'] = idx
+    # TODO -- add other headers here as we decide we need them.
+
+    return response
 
 
 @app.route('/source/<name>')
