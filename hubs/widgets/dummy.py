@@ -14,3 +14,11 @@ chrome = panel("This is a dummy widget")
           help="Some dummy text to display.")
 def data(request, session, widget, text):
     return dict(text=text)
+
+
+def should_invalidate(message, session, widget):
+    if not message['topic'].endswith('hubs.widget.update'):
+        return False
+    if message['msg']['widget']['id'] != widget.id:
+        return False
+    return True

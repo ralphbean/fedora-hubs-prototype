@@ -15,3 +15,11 @@ chrome = panel(title='Sticky Note', klass="panel-info")
 def data(request, session, widget, text):
     # TODO -- render with markdown
     return dict(text=text)
+
+
+def should_invalidate(message, session, widget):
+    if message['topic'].endswith('hubs.widget.update'):
+        if message['msg']['widget']['id'] == widget.id:
+            return True
+
+    return False

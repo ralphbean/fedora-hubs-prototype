@@ -36,3 +36,13 @@ def data(request, session, widget):
         members=len(widget.hub.members),
         subscribers=len(widget.hub.subscribers),
     )
+
+
+def should_invalidate(message, session, widget):
+    if message['topic'].endswith('hubs.hub.update'):
+        if message['msg']['hub']['name'] == widget.hub.name:
+            return True
+
+    # TODO -- also check for FAS group changes??  are we doing that?
+
+    return False

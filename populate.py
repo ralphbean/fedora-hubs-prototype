@@ -2,18 +2,13 @@
 """ Populate the hubs db with some dev data. """
 
 import json
-import os
-
-import flask
 
 import hubs.models
 
-app = flask.Flask(__name__)
-app.config.from_object('hubs.default_config')
-if 'HUBS_CONFIG' in os.environ:
-    app.config.from_envvar('HUBS_CONFIG')
+import fedmsg.config
+fedmsg_config = fedmsg.config.load_config()
 
-session = hubs.models.init(app.config['DB_URL'], True, True)
+session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'], True, True)
 
 hub = hubs.models.Hub(name='designteam', summary='The Fedora Design Team')
 session.add(hub)
