@@ -7,6 +7,8 @@ import fedmsg.consumers
 
 import hubs.models
 
+from hubs.widgets.base import invalidate_cache
+
 import logging
 log = logging.getLogger("hubs")
 
@@ -65,8 +67,12 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         # And do the real work of comparing every widget against the message.
         for widget in widgets:
             if widget.module.should_invalidate(msg, session, widget):
-                raise NotImplementedError("Invalidate the cache...")
-                raise NotImplementedError("Rebuild it.")
+                log.info("Invalidating cache for %r" % widget)
+                # Invalidate the cache...
+                invalidate_cache(widget.module, **widget.config)
+                # Rebuild it.
+                widget.module.data(session, widget, **widget.config)
+                # TODO -- fire off an EventSource notice that we updated stuff
 
         log.info("Done.  %0.2fs %s %s",
                   time.time() - start, msg['msg_id'], msg['topic'])

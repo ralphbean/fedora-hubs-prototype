@@ -60,6 +60,11 @@ def smartcache(module):
     return decorator
 
 
+def invalidate_cache(module, *args, **kwargs):
+    key = cache_key_generator(module, *args, **kwargs)
+    cache.delete(key)
+
+
 def cache_key_generator(module, args, kwargs):
     return "|".join([
         module.__name__,
