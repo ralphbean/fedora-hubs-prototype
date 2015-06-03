@@ -72,7 +72,7 @@ def widget_render(hub, idx):
     print(widget.plugin, "sleeping artificially for", s)
     time.sleep(s)
 
-    return widget.render(flask.request, session)
+    return widget.render(session)
 
 
 @app.route('/<hub>/<idx>/json')
@@ -82,7 +82,7 @@ def widget_json(hub, idx):
     widget = get_widget(session, hub, idx)
     from hubs.widgets import registry
     module = registry[widget.plugin]
-    data = module.data(flask.request, session, widget, **widget.config)
+    data = module.data(session, widget, **widget.config)
     response = flask.jsonify(data)
 
     # We don't actually need these two headers.  Just messing around.

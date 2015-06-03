@@ -150,9 +150,9 @@ class Widget(BASE):
     def module(self):
         return hubs.widgets.registry[self.plugin]
 
-    def render(self, request, session):
+    def render(self, session):
         render = hubs.widgets.render
-        return render(self.module, request, session, self, **self.config)
+        return render(self.module, session, self, **self.config)
 
 
 class User(BASE):

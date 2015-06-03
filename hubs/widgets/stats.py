@@ -31,7 +31,7 @@ template = jinja2.Template("""
 """)
 
 
-def data(request, session, widget):
+def data(session, widget):
     return dict(
         members=len(widget.hub.members),
         subscribers=len(widget.hub.subscribers),

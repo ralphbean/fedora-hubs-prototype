@@ -59,13 +59,13 @@ def prepare_registry(registry):
 validate_registry(registry)
 prepare_registry(registry)
 
-def render(module, request, session, widget, *args, **kwargs):
+def render(module, session, widget, *args, **kwargs):
     """ Main API entry point.
 
     Call this to render a widget into HTML
     """
     # The API returns exactly this data.  Shared cache
-    data = module.data(request, session, widget, *args, **kwargs)
+    data = module.data(session, widget, *args, **kwargs)
 
     # Use the API data to fill out a template, and potentially decorate it.
     return module.render(**data)
