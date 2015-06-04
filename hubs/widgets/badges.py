@@ -9,9 +9,11 @@ import hubs.validators as validators
 
 
 template = jinja2.Template("""
+<div class="flex-container">
 {% for badge in assertions %}
-    <img src="{{badge['image']}}"/>
+    <img width="19%" src="{{badge['image']}}"/>
 {%endfor%}
+</div>
 """)
 
 from hubs.widgets.chrome import panel
