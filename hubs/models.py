@@ -118,6 +118,11 @@ class Hub(BASE):
                             'text': 'TODO -- your feed goes here.',
                         }))
         hub.widgets.append(widget)
+        widget = Widget(plugin='badges', index=2,
+                        _config=json.dumps({
+                            'username': username,
+                        }))
+        hub.widgets.append(widget)
 
     @property
     def right_width(self):
