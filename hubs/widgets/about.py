@@ -6,13 +6,15 @@ import jinja2
 import hubs.validators as validators
 
 
-template = jinja2.Template("{{text}} decause was here")
-chrome = panel("This is a dummy widget")
+template = jinja2.Template("""
+    <p>{{text}}</p>
+    """)
+chrome = panel("About")
 
 
-@argument(name="text", default="Lorem ipsum dolor...",
+@argument(name="text", default="I am a Fedora user, and this is my about",
           validator=validators.text,
-          help="Some dummy text to display.")
+          help="Text about a user.")
 def data(session, widget, text):
     return dict(text=text)
 
