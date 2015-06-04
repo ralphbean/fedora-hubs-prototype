@@ -94,6 +94,26 @@ class Hub(BASE):
     members = ['ralph', 'sadin', 'sayan'] + owners
     subscribers = []
 
+    @classmethod
+    def by_name(cls, session, name):
+        return session.query(cls).filter_by(name=name).first()
+
+    @classmethod
+    def create_user_hub(cls, session, username, fullname):
+        hub = cls(name=username, summary=fullname)
+        session.add(hub)
+
+        widget = Widget(plugin='sticky', index=0, left=True,
+                        _config=json.dumps({
+                            'text': 'TODO -- put a fancy graph here..',
+                        }))
+        hub.widgets.append(widget)
+        widget = Widget(plugin='sticky', index=0,
+                        _config=json.dumps({
+                            'text': 'TODO -- your feed goes here.',
+                        }))
+        hub.widgets.append(widget)
+
     @property
     def right_width(self):
         return 12 - self.left_width
@@ -158,15 +178,18 @@ class Widget(BASE):
 class User(BASE):
     __tablename__ = 'users'
     openid = sa.Column(sa.Text, primary_key=True)
-    openid_url = sa.Column(sa.Text, unique=True)
+    fullname = sa.Column(sa.Text)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
 
     def __json__(self, reify=False):
         return {
             'openid': self.openid,
-            'openid_url': self.openid_url,
             'created_on': self.created_on,
         }
+
+    @property
+    def username(self):
+        return self.openid.split('.')[0]
 
     @classmethod
     def by_openid(cls, session, openid):
@@ -177,3 +200,17 @@ class User(BASE):
     @classmethod
     def all(cls, session):
         return session.query(cls).all()
+
+    @classmethod
+    def get_or_create(cls, session, openid, fullname):
+        if not openid:
+            raise ValueError("Must provide openid, not %r" % openid)
+
+        self = cls.by_openid(session, openid)
+        if not self:
+            self = cls(openid=openid, fullname=fullname)
+            session.add(self)
+            if not Hub.by_name(session, self.username):
+                Hub.create_user_hub(session, self.username, self.fullname)
+            session.commit()
+        return self

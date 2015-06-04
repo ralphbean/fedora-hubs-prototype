@@ -29,7 +29,10 @@ session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'])
 
 @app.route('/')
 def index():
-    return flask.redirect('/designteam')  # TODO - remove this later
+    if not flask.g.auth.logged_in:
+        return flask.redirect(flask.url_for('login_fedora'))
+
+    return flask.redirect(flask.url_for('hub', name=flask.g.auth.nickname))
 
 
 @app.route('/<name>')
@@ -162,6 +165,11 @@ def after_openid_login(resp):
     flask.app.session['fullname'] = resp.fullname
     flask.app.session['nickname'] = resp.nickname or resp.fullname
     flask.app.session['email'] = resp.email
+
+    openid = openid_url.strip('/').split('/')[-1]
+    hubs.models.User.get_or_create(
+        session, openid=openid, fullname=resp.fullname)
+
     next_url = flask.request.args.get('next', default)
     return flask.redirect(next_url)
 
@@ -176,13 +184,6 @@ def login_required(function):
             return flask.redirect(flask.url_for(
                 'login_fedora', next=flask.request.url))
 
-        # TODO - Ensure that the logged in user exists before we proceed.
-        hubs.models.User.get_or_create(
-            session,
-            openid=flask.g.auth.openid,
-            openid_url=flask.g.auth.openid_url,
-        )
-
         return function(*args, **kwargs)
     return decorated_function
 
@@ -196,7 +197,7 @@ def check_auth():
         id=None,
     )
     if 'openid' in flask.session:
-        openid = flask.session.get('openid').split('/')[-1]
+        openid = flask.session.get('openid').strip('/').split('/')[-1]
         flask.g.auth.logged_in = True
         flask.g.auth.method = u'openid'
         flask.g.auth.openid = openid
