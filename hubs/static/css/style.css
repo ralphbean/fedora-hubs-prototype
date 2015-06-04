@@ -6,10 +6,18 @@
     }
     .super-header {
       text-align: right;
-      background: -moz-linear-gradient(rgba(255,255,255,0),rgba(255,255,255,1)); /*Fx 3.6-15*/
+      background: -webkit-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
+      background: -o-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
+      background: -moz-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
+      background: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
+      padding: 20px 20px 20px 0;
+      font-family: 'Open Sans', 'sans-serif';
+      font-size: 12pt;
     }
-    .bookmarks {
+    .bookmarks .navbar.navbar-default {
       background-color: #fff;
+      margin-bottom: 0;
+      text-align: center;
     }
     .header {
       color: #ffffff;
