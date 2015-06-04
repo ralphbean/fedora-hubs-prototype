@@ -14,7 +14,7 @@ app = flask.Flask(__name__)
 # TODO - put this in config so we can migrate to pagure
 # TODO - instead of 'develop', use the version from pkg_resources to figure out
 #        the right tag to link people to.  AGPL ftw.
-SOURCE_URL = 'https://github.com/ralphbean/fedora-hubs-prototype/blob/develop'
+SOURCE_URL = 'https://pagure.io/fedora-hubs/blob/develop/f'#/hubs/widgets/badges.py'
 
 
 app.config.from_object('hubs.default_config')
@@ -97,7 +97,8 @@ def widget_json(hub, idx):
 def widget_source(name):
     from hubs.widgets import registry
     base = '/hubs/'
-    fname = base + registry[name].__file__.split(base, 1)[1][:-1]
+    fname = base + registry[name].__file__.split(base, 1)[1]
+    fname = fname.replace('.pyc', '.py')
     return flask.redirect(SOURCE_URL + fname)
 
 
