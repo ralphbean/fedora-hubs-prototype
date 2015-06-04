@@ -5,6 +5,9 @@ The latest source is not on GitHub, it is on pagure.io.  You can find it at http
 
 Hacking
 -------
+Install fedora dependencies:
+
+    $ sudo dnf install gcc gcc-c++ sqlite-devel 
 
 Hubs should work on python2 **and** python3, so let's default to python3 and
 see how that goes.
