@@ -53,6 +53,7 @@ $.each(widgets, function(i, widget) {
         }, 100);
       },
       error: function() {
+        $('#widget-' + widget).html('Got an error retrieving this widget.  Sorry :(');
         console.log('error');
         console.trace();
       },

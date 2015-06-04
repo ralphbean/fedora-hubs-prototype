@@ -3,6 +3,7 @@ from hubs.widgets import stats
 from hubs.widgets import rules
 from hubs.widgets import sticky
 from hubs.widgets import about
+from hubs.widgets import avatar
 
 from hubs.widgets.base import AGPLv3, smartcache
 
@@ -12,6 +13,7 @@ registry = {
     'rules': rules,
     'sticky': sticky,
     'about': about,
+    'avatar': avatar,
 }
 
 

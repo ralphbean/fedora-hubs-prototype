@@ -108,7 +108,12 @@ class Hub(BASE):
                             'text': 'TODO -- put a fancy graph here..',
                         }))
         hub.widgets.append(widget)
-        widget = Widget(plugin='sticky', index=0,
+        widget = Widget(plugin='avatar', index=0,
+                        _config=json.dumps({
+                            'username': username,
+                        }))
+        hub.widgets.append(widget)
+        widget = Widget(plugin='sticky', index=1,
                         _config=json.dumps({
                             'text': 'TODO -- your feed goes here.',
                         }))
