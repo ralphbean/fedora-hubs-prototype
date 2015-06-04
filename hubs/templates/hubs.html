@@ -3,13 +3,15 @@
   <title>{{ hub.name }}</title>
   <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" rel="stylesheet" />
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,400italic|Comfortaa' rel='stylesheet' type='text/css'>
+<!--I added google fonts!!!! Sorry if I wasn't supposed to do that!!! -->
 </head>
 <body>
 <div class="super-header">
   <div class="row">
     <div class="col-md-4 col-md-offset-8">
       {% if g.auth.logged_in %}
-        Logged in as {{ g.auth.nickname }}
+        {# Logged in as #} {{ g.auth.nickname }}
       {% else %}
         Not logged in.  Click to <a href="{{url_for('login_fedora')}}">login</a>.
       {% endif %}
@@ -17,7 +19,33 @@
   </div>
 </div>
 <div class="bookmarks">
-  naaav here eventuallyyyyyyy
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Fedora Hubs</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Link</a></li>
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>          
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
 </div>
 <div class="header">
   <div class="padded center-block medium-wide">
