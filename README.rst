@@ -1,3 +1,8 @@
+Source on Pagure.io
+-------------------
+
+The latest source is not on GitHub, it is on pagure.io.  You can find it at https://pagure.io/fedora-hubs
+
 Hacking
 -------
 
