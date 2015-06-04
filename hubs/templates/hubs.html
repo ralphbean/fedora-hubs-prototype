@@ -5,16 +5,20 @@
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" />
 </head>
 <body>
-<div class="row">
-  <div class="col-md-4 col-md-offset-8">
-    {% if g.auth.logged_in %}
-      Logged in as {{ g.auth.nickname }}
-    {% else %}
-      Not logged in.  Click to <a href="{{url_for('login_fedora')}}">login</a>.
-    {% endif %}
+<div class="super-header">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-8">
+      {% if g.auth.logged_in %}
+        Logged in as {{ g.auth.nickname }}
+      {% else %}
+        Not logged in.  Click to <a href="{{url_for('login_fedora')}}">login</a>.
+      {% endif %}
+    </div>
   </div>
 </div>
-blah blah bookmarks menu
+<div class="bookmarks">
+  naaav here eventuallyyyyyyy
+</div>
 <div class="header">
   <div class="padded center-block medium-wide">
     <h3>{{hub.name}}</h3>
