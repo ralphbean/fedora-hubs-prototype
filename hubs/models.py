@@ -146,10 +146,13 @@ class Widget(BASE):
             'plugin': self.plugin,
         }
 
-    def render(self, request, session):
-        module = hubs.widgets.registry[self.plugin]
+    @property
+    def module(self):
+        return hubs.widgets.registry[self.plugin]
+
+    def render(self, session):
         render = hubs.widgets.render
-        return render(module, request, session, self, **self.config)
+        return render(self.module, session, self, **self.config)
 
 
 class User(BASE):

@@ -51,13 +51,18 @@ def AGPLv3(name):
 def smartcache(module):
     def decorator(func):
         @wraps(func)
-        def inner(request, session, widget, *args, **kwargs):
+        def inner(session, widget, *args, **kwargs):
             key = cache_key_generator(module, args, kwargs)
-            creator = lambda: func(request, session, widget, *args, **kwargs)
+            creator = lambda: func(session, widget, *args, **kwargs)
             return cache.get_or_create(key, creator)
 
         return inner
     return decorator
+
+
+def invalidate_cache(module, *args, **kwargs):
+    key = cache_key_generator(module, *args, **kwargs)
+    cache.delete(key)
 
 
 def cache_key_generator(module, args, kwargs):

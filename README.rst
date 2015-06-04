@@ -47,11 +47,12 @@ In order to be valid, a widget must have:
 
 This isn't implemented yet, but they're going to need:
 
-- A ``invalidate(session, message)`` function that will be used to
+- A ``should_invalidate(message, session, widget)`` function that will be used to
   *potentially* invalidate the widget's cache. That function will get called by
   a backend daemon listening for fedmsg messages so when you update your group
-  memberships in FAS, a fedmsg message hits the fedora-hubs backend and it
-  nukes/refreshes a lookup value in memcached (or some other store).
+  memberships in FAS, a fedmsg message hits the fedora-hubs backend and returns
+  True if the lookup value should be nuked/refreshed in memcached (or some
+  other store).
 
 Furthermore, a proposal:
 

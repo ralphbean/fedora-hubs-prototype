@@ -17,6 +17,9 @@ app.config.from_object('hubs.default_config')
 if 'HUBS_CONFIG' in os.environ:
     app.config.from_envvar('HUBS_CONFIG')
 
+import fedmsg.config
+fedmsg_config = fedmsg.config.load_config()
+
 
 @app.route('/')
 def index():
@@ -26,7 +29,7 @@ def index():
 @app.route('/<name>')
 @app.route('/<name>/')
 def hub(name):
-    session = models.init(app.config['DB_URL'])
+    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
     hub = session.query(models.Hub)\
         .filter(models.Hub.name==name)\
         .first()
@@ -60,7 +63,7 @@ def get_widget(session, hub, idx):
 @app.route('/<hub>/<idx>')
 @app.route('/<hub>/<idx>/')
 def widget_render(hub, idx):
-    session = models.init(app.config['DB_URL'])
+    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
     widget = get_widget(session, hub, idx)
 
     # Make this artificially slow for development...
@@ -69,17 +72,17 @@ def widget_render(hub, idx):
     print(widget.plugin, "sleeping artificially for", s)
     time.sleep(s)
 
-    return widget.render(flask.request, session)
+    return widget.render(session)
 
 
 @app.route('/<hub>/<idx>/json')
 @app.route('/<hub>/<idx>/json/')
 def widget_json(hub, idx):
-    session = models.init(app.config['DB_URL'])
+    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
     widget = get_widget(session, hub, idx)
     from hubs.widgets import registry
     module = registry[widget.plugin]
-    data = module.data(flask.request, session, widget, **widget.config)
+    data = module.data(session, widget, **widget.config)
     response = flask.jsonify(data)
 
     # We don't actually need these two headers.  Just messing around.

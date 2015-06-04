@@ -39,7 +39,19 @@ template = jinja2.Template("""
 @argument(name='link', default=None,
           validator=validators.link,
           help="Link to the community rules and guidelines")
-def data(request, session, widget, link):
+def data(session, widget, link):
     owners = widget.hub.owners
     owners = ordereddict([(o, avatar(o)) for o in owners])
     return dict(owners=owners, link=link)
+
+
+def should_invalidate(message, session, widget):
+    if message['topic'].endswith('hubs.widget.update'):
+        if message['msg']['widget']['id'] == widget.id:
+            return True
+
+    if message['topic'].endswith('hubs.hub.update'):
+        if message['msg']['hub']['name'] == widget.hub.name:
+            return True
+
+    return False
