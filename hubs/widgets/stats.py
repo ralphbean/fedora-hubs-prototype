@@ -38,6 +38,7 @@ def data(session, widget):
     )
 
 
+# TODO -- add topic-based hinting here.  Solved.
 def should_invalidate(message, session, widget):
     if message['topic'].endswith('hubs.hub.update'):
         if message['msg']['hub']['name'] == widget.hub.name:
