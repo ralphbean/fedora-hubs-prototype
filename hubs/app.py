@@ -2,7 +2,7 @@ import os
 
 import flask
 
-import models
+import hubs.models
 
 app = flask.Flask(__name__)
 
@@ -29,9 +29,9 @@ def index():
 @app.route('/<name>')
 @app.route('/<name>/')
 def hub(name):
-    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
-    hub = session.query(models.Hub)\
-        .filter(models.Hub.name==name)\
+    session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'])
+    hub = session.query(hubs.models.Hub)\
+        .filter(hubs.models.Hub.name==name)\
         .first()
 
     if not hub:
@@ -46,8 +46,8 @@ def get_widget(session, hub, idx):
     except TypeError:
         flask.abort(404)
 
-    hub = session.query(models.Hub)\
-        .filter(models.Hub.name==hub)\
+    hub = session.query(hubs.models.Hub)\
+        .filter(hubs.models.Hub.name==hub)\
         .first()
 
     if not hub:
@@ -63,7 +63,7 @@ def get_widget(session, hub, idx):
 @app.route('/<hub>/<idx>')
 @app.route('/<hub>/<idx>/')
 def widget_render(hub, idx):
-    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
+    session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'])
     widget = get_widget(session, hub, idx)
 
     # Make this artificially slow for development...
@@ -78,7 +78,7 @@ def widget_render(hub, idx):
 @app.route('/<hub>/<idx>/json')
 @app.route('/<hub>/<idx>/json/')
 def widget_json(hub, idx):
-    session = models.init(fedmsg_config['hubs.sqlalchemy.uri'])
+    session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'])
     widget = get_widget(session, hub, idx)
     from hubs.widgets import registry
     module = registry[widget.plugin]
