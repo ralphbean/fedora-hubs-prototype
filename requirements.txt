@@ -3,3 +3,4 @@ sqlalchemy
 fedmsg
 dogpile.cache
 fedmsg_meta_fedora_infrastructure
+pysqlite
