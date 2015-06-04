@@ -28,8 +28,6 @@ def data(session, widget, username):
     url = "https://badges.fedoraproject.org/user/{username}/json"
     url = url.format(username=username)
     response = requests.get(url)
-    import pprint; pprint.pprint(response.json())
-
     return response.json()
 
 

@@ -72,7 +72,6 @@ def get_widget(session, hub, idx):
 @app.route('/<hub>/<idx>/')
 def widget_render(hub, idx):
     widget = get_widget(session, hub, idx)
-
     return widget.render(session)
 
 
