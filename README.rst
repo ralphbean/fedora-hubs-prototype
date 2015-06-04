@@ -33,6 +33,10 @@ If you want to test it with 8 worker threads, try ``gunicorn``::
     $ pip install gunicorn
     $ gunicorn -w 8 hubs.app:app
 
+Hacking on Widgets one-liner::
+
+    $ rm /var/tmp/hubs.db; PYTHONPATH=. python3 populate.py; gunicorn -w 8 hubs.app:app
+
 Internal design
 ---------------
 

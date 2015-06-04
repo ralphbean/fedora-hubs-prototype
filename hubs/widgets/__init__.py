@@ -2,6 +2,7 @@ from hubs.widgets import dummy
 from hubs.widgets import stats
 from hubs.widgets import rules
 from hubs.widgets import sticky
+from hubs.widgets import about
 
 from hubs.widgets.base import AGPLv3, smartcache
 
@@ -10,6 +11,7 @@ registry = {
     'stats': stats,
     'rules': rules,
     'sticky': sticky,
+    'about': about,
 }
 
 
