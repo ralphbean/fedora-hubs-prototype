@@ -1,0 +1,40 @@
+   body {
+      background-color: #c;
+    }
+    .panel {
+      border-radius: 0px;
+    }
+    .header {
+      color: #ffffff;
+      background-color: #3c6eb4;
+      width: 100%;
+    }
+    .row {
+      padding: 5px;
+    }
+    .padded {
+      padding: 5px;
+    }
+    .medium-wide {
+      width: 250px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+    .widget-buttons {
+      padding: 5px;
+      /* TODO -- lots more nice styling here... */
+    }
+    .panel {
+      visibility: hidden;
+      max-height: 0px;
+      overflow: hidden;
+      transition: max-height 0.4s;
+    }
+
+    .panel-visible {
+      visibility: visible;
+      max-height: 400px;
+    }
+
