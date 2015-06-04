@@ -2,6 +2,7 @@ import functools
 import os
 
 import flask
+import munch
 
 from flask.ext.openid import OpenID
 
@@ -133,7 +134,7 @@ def login():
 @app.route('/login/fedora/')
 @app.route('/login/fedora')
 @oid.loginhandler
-def fedora_login():
+def login_fedora():
     #default = flask.url_for('profile_redirect')
     #next_url = flask.request.args.get('next', default)
     return oid.try_login(
@@ -173,7 +174,7 @@ def login_required(function):
         if not flask.g.auth.logged_in:
             flask.flash('Login required', 'errors')
             return flask.redirect(flask.url_for(
-                'fedora_login', next=flask.request.url))
+                'login_fedora', next=flask.request.url))
 
         # TODO - Ensure that the logged in user exists before we proceed.
         hubs.models.User.get_or_create(
@@ -184,6 +185,26 @@ def login_required(function):
 
         return function(*args, **kwargs)
     return decorated_function
+
+
+@app.before_request
+def check_auth():
+    flask.g.fedmsg_config = fedmsg_config
+    flask.g.auth = munch.Munch(
+        logged_in=False,
+        method=None,
+        id=None,
+    )
+    if 'openid' in flask.session:
+        openid = flask.session.get('openid').split('/')[-1]
+        flask.g.auth.logged_in = True
+        flask.g.auth.method = u'openid'
+        flask.g.auth.openid = openid
+        flask.g.auth.openid_url = flask.session.get('openid')
+        flask.g.auth.fullname = flask.session.get('fullname', None)
+        flask.g.auth.nickname = flask.session.get('nickname', None)
+        flask.g.auth.email = flask.session.get('email', None)
+
 
 
 if __name__ == '__main__':
