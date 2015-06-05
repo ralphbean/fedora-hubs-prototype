@@ -40,6 +40,13 @@ chrome = panel('Pending ACL Requests', key='pending_acls')
           validator=validators.username,
           help="A FAS username.")
 def data(session, widget, username):
+
+    # TODO -- rewrite this to
+    # 1) use the datagrepper API instead of the direct pkgdb API
+    # 2) so that we can use the fedmsg.meta.conglomerate API to
+    # 3) group messages nicely in the UI instead of having repeats
+    # It will be slower, but that's fine because of our smart cache.
+
     baseurl = "https://admin.fedoraproject.org/pkgdb/api/pendingacls"
     query = "?username={username}&format=json".format(username=username)
     url = baseurl + query
