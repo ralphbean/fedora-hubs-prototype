@@ -115,9 +115,7 @@ class Hub(BASE):
         hub.widgets.append(widget)
         widget = Widget(plugin='workflow.pendingacls', index=1,
                         _config=json.dumps({
-                            # Only because he has pendingacls to test against
-                            'username': 'vicodan',
-                            #'username': username,
+                            'username': username,
                         }))
         hub.widgets.append(widget)
         widget = Widget(plugin='badges', index=2,
