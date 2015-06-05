@@ -25,7 +25,7 @@ _panel_heading_template = jinja2.Template("""
 """)
 
 
-def panel(title=None, klass="panel-default"):
+def panel(title=None, klass="panel-default", key=None):
     def decorator(func):
         @wraps(func)
         def inner(*args, **kwargs):
@@ -33,6 +33,8 @@ def panel(title=None, klass="panel-default"):
             if title:
                 heading = _panel_heading_template.render(title=title)
             content = func(*args, **kwargs)
+            if key and not kwargs.get(key):
+                return content
             return _panel_template.render(
                 content=content,
                 heading=heading,

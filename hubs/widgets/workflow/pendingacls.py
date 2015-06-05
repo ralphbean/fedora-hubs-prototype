@@ -31,7 +31,8 @@ template = jinja2.Template("""
 """)
 
 from hubs.widgets.chrome import panel
-chrome = panel("Pending ACLs")
+# If 'pending_acls' is empty, then don't render any chrome.
+chrome = panel('Pending ACL Requests', key='pending_acls')
 
 
 @argument(name="username",
