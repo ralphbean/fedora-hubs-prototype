@@ -1,10 +1,7 @@
-from hashlib import sha256
-
 from hubs.widgets.base import argument
+from hubs.utils import username2avatar
 
 import jinja2
-
-from six.moves.urllib_parse import urlencode
 
 import hubs.validators as validators
 
@@ -22,15 +19,7 @@ template = jinja2.Template("""
           validator=validators.username,
           help="A FAS username.")
 def data(session, widget, username):
-
-    query = urlencode({
-        'd': 'retro',
-        's': 312,
-    })
-    openid = 'http://%s.id.fedoraproject.org/' % username
-    hash = sha256(openid.encode('utf-8')).hexdigest()
-    avatar = "https://seccdn.libravatar.org/avatar/%s?%s" % (hash, query)
-
+    avatar = username2avatar(username)
     return dict(username=username, avatar=avatar)
 
 

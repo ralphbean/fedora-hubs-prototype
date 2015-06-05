@@ -6,6 +6,8 @@ from hubs.widgets import about
 from hubs.widgets import avatar
 from hubs.widgets import badges
 
+from hubs.widgets.workflow import pendingacls
+
 from hubs.widgets.base import AGPLv3, smartcache
 
 registry = {
@@ -16,6 +18,8 @@ registry = {
     'about': about,
     'avatar': avatar,
     'badges': badges,
+
+    'workflow.pendingacls': pendingacls,
 }
 
 
