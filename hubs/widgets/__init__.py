@@ -9,6 +9,7 @@ from hubs.widgets import fedmsgs
 from hubs.widgets import fedmsgstats
 
 from hubs.widgets.workflow import pendingacls
+from hubs.widgets.workflow import updates2stable
 
 from hubs.widgets.base import AGPLv3, smartcache
 
@@ -23,6 +24,7 @@ registry = {
     'fedmsgs': fedmsgs,
     'fedmsgstats': fedmsgstats,
     'workflow.pendingacls': pendingacls,
+    'workflow.updates2stable': updates2stable,
 }
 
 
