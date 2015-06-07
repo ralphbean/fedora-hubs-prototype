@@ -32,13 +32,19 @@ def add_user_widgets(session, hub, username, fullname):
         }))
     hub.widgets.append(widget)
     widget = hubs.models.Widget(
-        plugin='workflow.pendingacls', index=2,
+        plugin='workflow.updates2stable', index=2,
         _config=json.dumps({
             'username': username,
         }))
     hub.widgets.append(widget)
     widget = hubs.models.Widget(
-        plugin='badges', index=3,
+        plugin='workflow.pendingacls', index=3,
+        _config=json.dumps({
+            'username': username,
+        }))
+    hub.widgets.append(widget)
+    widget = hubs.models.Widget(
+        plugin='badges', index=4,
         _config=json.dumps({
             'username': username,
         }))

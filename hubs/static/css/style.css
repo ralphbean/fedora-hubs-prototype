@@ -75,3 +75,8 @@ color: #797a7c;
 .stats-table td {
 font-size: 32pt;
 }
+
+.square-32 {
+    width: 32px;
+    height: 32px;
+}
