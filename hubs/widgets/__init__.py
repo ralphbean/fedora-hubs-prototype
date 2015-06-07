@@ -6,6 +6,7 @@ from hubs.widgets import about
 from hubs.widgets import avatar
 from hubs.widgets import badges
 from hubs.widgets import fedmsgs
+from hubs.widgets import fedmsgstats
 
 from hubs.widgets.workflow import pendingacls
 
@@ -20,6 +21,7 @@ registry = {
     'avatar': avatar,
     'badges': badges,
     'fedmsgs': fedmsgs,
+    'fedmsgstats': fedmsgstats,
     'workflow.pendingacls': pendingacls,
 }
 
