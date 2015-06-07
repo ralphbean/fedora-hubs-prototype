@@ -50,7 +50,7 @@
 
     .panel-visible {
       visibility: visible;
-      max-height: 400px;
+      max-height: 100%;
     }
 
 //flexbox support

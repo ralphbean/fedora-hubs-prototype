@@ -8,9 +8,17 @@ def add_user_widgets(session, hub, username, fullname):
     widget = hubs.models.Widget(
         plugin='sticky', index=0, left=True,
         _config=json.dumps({
-            'text': 'TODO -- put a fancy graph here..',
+            'text': 'TODO -- Put a fancy graph here...',
         }))
     hub.widgets.append(widget)
+    widget = hubs.models.Widget(
+        plugin='fedmsgs', index=1, left=True,
+        _config=json.dumps({
+            'username': username,
+        }))
+    hub.widgets.append(widget)
+
+    # Right Side Widgets
     widget = hubs.models.Widget(
         plugin='avatar', index=0,
         _config=json.dumps({
