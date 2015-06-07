@@ -36,6 +36,7 @@ from sqlalchemy.orm import backref
 import fedmsg
 import fedmsg.utils
 
+import hubs.defaults
 import hubs.widgets
 
 
@@ -102,27 +103,7 @@ class Hub(BASE):
     def create_user_hub(cls, session, username, fullname):
         hub = cls(name=username, summary=fullname)
         session.add(hub)
-
-        widget = Widget(plugin='sticky', index=0, left=True,
-                        _config=json.dumps({
-                            'text': 'TODO -- put a fancy graph here..',
-                        }))
-        hub.widgets.append(widget)
-        widget = Widget(plugin='avatar', index=0,
-                        _config=json.dumps({
-                            'username': username,
-                        }))
-        hub.widgets.append(widget)
-        widget = Widget(plugin='workflow.pendingacls', index=1,
-                        _config=json.dumps({
-                            'username': username,
-                        }))
-        hub.widgets.append(widget)
-        widget = Widget(plugin='badges', index=2,
-                        _config=json.dumps({
-                            'username': username,
-                        }))
-        hub.widgets.append(widget)
+        hubs.defaults.add_user_widgets(session, hub, username, fullname)
 
     @property
     def right_width(self):
