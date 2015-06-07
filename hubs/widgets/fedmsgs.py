@@ -23,7 +23,7 @@ chrome = panel("Daily Activity")
           validator=validators.username,
           help="A FAS username.")
 def data(session, widget, username):
-    url = "https://apps.fedoraproject.org/datagrepper/charts/line?delta=86400&N=12&style=clean&height=200&fill=true&user={username}"
+    url = "https://apps.fedoraproject.org/datagrepper/charts/line?delta=86400&N=12&style=clean&height=300&fill=true&user={username}"
     url = url.format(username=username)
     return dict(url=url)
 
