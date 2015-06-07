@@ -5,6 +5,7 @@ from hubs.widgets import sticky
 from hubs.widgets import about
 from hubs.widgets import avatar
 from hubs.widgets import badges
+from hubs.widgets import fedmsgs
 
 from hubs.widgets.workflow import pendingacls
 
@@ -18,7 +19,7 @@ registry = {
     'about': about,
     'avatar': avatar,
     'badges': badges,
-
+    'fedmsgs': fedmsgs,
     'workflow.pendingacls': pendingacls,
 }
 
