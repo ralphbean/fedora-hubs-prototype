@@ -9,6 +9,7 @@ import hubs.validators as validators
 
 # TODO -- add approve/deny buttons or just link through to pkgdb
 template = jinja2.Template("""
+{% if updates %}
 <a class="btn btn-success" target="_blank" href="https://admin.fedoraproject.org/updates/mine">Manage updates</a>
 <hr/>
 <ul class="media-list">
@@ -26,6 +27,7 @@ template = jinja2.Template("""
     </li>
 {% endfor %}
 </ul>
+{% endif %}
 """)
 
 from hubs.widgets.chrome import panel
