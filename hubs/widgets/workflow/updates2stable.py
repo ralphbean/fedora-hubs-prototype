@@ -1,5 +1,6 @@
 import requests
 
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.base import argument
 
 import jinja2
@@ -35,6 +36,9 @@ from hubs.widgets.chrome import panel
 chrome = panel('Updates Ready for Stable', key='updates')
 
 
+giveaway = 'can be pushed to stable now'
+
+
 @argument(name="username",
           default=None,
           validator=validators.username,
@@ -52,7 +56,6 @@ def data(session, widget, username):
 
     # Limit it this to only the updates that haven't already requested stable
     # but which can actually be pushed to stable now.
-    giveaway = 'can be pushed to stable now'
     data['updates'] = [
         update for update in data['updates']
         if update['request'] is None and
@@ -69,5 +72,11 @@ def data(session, widget, username):
     return data
 
 
+@hint(topics=[_('bodhi.update.comment')])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    if giveaway in message['msg']['comment']['text']:
+        username = widget.config['username']
+        if username == message['msg']['comment']['update_submitter']:
+            return True
+
+    return False

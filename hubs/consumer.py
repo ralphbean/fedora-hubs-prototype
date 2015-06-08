@@ -43,18 +43,24 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
     def rebuild_hubs_hint_caches(self, session):
         self.checks_by_topic = collections.defaultdict(list)
         self.checks_by_category = collections.defaultdict(list)
+        self.checks_by_username = collections.defaultdict(list)
 
         widgets = session.query(hubs.models.Widget).all()
         log.info("Comparing message against %i widgets" % len(widgets))
         for widget in widgets:
             check = widget.module.should_invalidate
+
             if not hasattr(check, 'hints'):
                 raise AttributeError("%r must declare hints" % widget.module)
+
             for topic in check.hints['topics']:
                 self.checks_by_topic[topic].append((check, widget,))
+
             for category in check.hints['categories']:
                 self.checks_by_category[category].append((check, widget,))
 
+            for username in check.hints['usernames_function']:
+                self.checks_by_username[username].append((check, widget,))
 
     @property
     def cache_initialized(self):

@@ -27,5 +27,8 @@ def data(session, widget, username):
     )
 
 
+@hint(usernames=lambda widget: [widget.config['username']])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    usernames = fedmsg.meta.msg2usernames(message, **config)
+    username = widget.config['username']
+    return username in usernames

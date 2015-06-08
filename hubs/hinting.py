@@ -7,9 +7,10 @@ import logging
 log = logging.getLogger('hubs.hinting')
 
 
-def hint(topics=None, categories=None):
+def hint(topics=None, categories=None, usernames=None):
     topics = topics or []
     categories = categories or []
+    usernames = usernames or lambda x: []
 
     @decorator.decorator
     def wrapper(fn, *args, **kwargs):
@@ -17,7 +18,11 @@ def hint(topics=None, categories=None):
 
     def wrapper_wrapper(fn):
         wrapped = wrapper(fn)
-        wrapped.hints = dict(topics=topics, categories=categories)
+        wrapped.hints = dict(
+            topics=topics,
+            categories=categories,
+            username_function=usernames,
+        )
         return wrapped
 
     return wrapper_wrapper

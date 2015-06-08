@@ -1,5 +1,6 @@
 import requests
 
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.base import argument
 from hubs.utils import username2avatar
 
@@ -57,5 +58,13 @@ def data(session, widget, username):
     return data
 
 
+@hint(topics=[_('pkgdb.acl.update')])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    # Search the message to see if I am in the ACLs list of the request.
+    username = widget.config['username']
+
+    for acl in message['msg']['package_listing']['acls']:
+        if acl['fas_name'] == username and acl['status'] == 'Approved':
+            return True
+
+    return False

@@ -1,9 +1,12 @@
+from hubs.hinting import hint
 from hubs.widgets.base import argument
 
 import jinja2
 
-
 import hubs.validators as validators
+
+import fedmsg.config
+config = fedmsg.config.load_config()
 
 
 template = jinja2.Template("""
@@ -28,5 +31,8 @@ def data(session, widget, username):
     return dict(url=url)
 
 
+@hint(usernames=lambda widget: [widget.config['username']])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    usernames = fedmsg.meta.msg2usernames(message, **config)
+    username = widget.config['username']
+    return username in usernames

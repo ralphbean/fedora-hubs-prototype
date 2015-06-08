@@ -23,5 +23,10 @@ def data(session, widget, username):
     return dict(username=username, avatar=avatar)
 
 
+@hint(topics=[_('hubs.widget.update')])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    if not message['topic'].endswith('hubs.widget.update'):
+        return False
+    if message['msg']['widget']['id'] != widget.id:
+        return False
+    return True

@@ -1,5 +1,6 @@
 import requests
 
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.base import argument
 
 import jinja2
@@ -31,5 +32,15 @@ def data(session, widget, username):
     return response.json()
 
 
+@hint(topics=[_('hubs.widget.update'), _('fedbadges.badge.award')])
 def should_invalidate(message, session, widget):
-    raise NotImplementedError
+    if message['topic'].endswith('hubs.widget.update'):
+        if message['msg']['widget']['id'] != widget.id:
+            return True
+
+    if message['topic'].endswith('fedbadges.badge.award'):
+        username = widget.config['username']
+        if message['msg']['user']['username'] == username:
+            return True
+
+    return False
