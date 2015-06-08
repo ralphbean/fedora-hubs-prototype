@@ -1,3 +1,4 @@
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.chrome import panel
 
 import jinja2
@@ -21,7 +22,7 @@ def data(session, widget):
     )
 
 
-# TODO -- add topic-based hinting here.  Solved.
+@hint(topics=_('hubs.hub.update'))
 def should_invalidate(message, session, widget):
     if message['topic'].endswith('hubs.hub.update'):
         if message['msg']['hub']['name'] == widget.hub.name:
