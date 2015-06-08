@@ -1,3 +1,4 @@
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.chrome import panel
 from hubs.widgets.base import argument
 
@@ -16,6 +17,7 @@ def data(session, widget, text):
     return dict(text=text)
 
 
+@hint(topics=[_('hubs.widget.update')])
 def should_invalidate(message, session, widget):
     if not message['topic'].endswith('hubs.widget.update'):
         return False

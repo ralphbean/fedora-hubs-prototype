@@ -2,6 +2,7 @@ from collections import OrderedDict as ordereddict
 
 import jinja2
 
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.chrome import panel
 from hubs.widgets.base import argument, avatar
 from hubs import validators
@@ -45,6 +46,7 @@ def data(session, widget, link):
     return dict(owners=owners, link=link)
 
 
+@hint(topics=[_('hubs.widget.update'), _('hubs.hub.update')])
 def should_invalidate(message, session, widget):
     if message['topic'].endswith('hubs.widget.update'):
         if message['msg']['widget']['id'] == widget.id:
