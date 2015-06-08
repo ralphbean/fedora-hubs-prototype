@@ -1,3 +1,4 @@
+from hubs.hinting import hint, prefixed as _
 from hubs.widgets.base import argument
 from hubs.utils import username2avatar
 
