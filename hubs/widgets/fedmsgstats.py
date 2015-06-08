@@ -1,3 +1,4 @@
+from hubs.hinting import hint
 from hubs.widgets.chrome import panel
 
 import jinja2

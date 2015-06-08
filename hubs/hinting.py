@@ -10,7 +10,8 @@ log = logging.getLogger('hubs.hinting')
 def hint(topics=None, categories=None, usernames=None):
     topics = topics or []
     categories = categories or []
-    usernames = usernames or lambda x: []
+    default_usernames = lambda x: []
+    usernames = usernames or default_usernames
 
     @decorator.decorator
     def wrapper(fn, *args, **kwargs):
