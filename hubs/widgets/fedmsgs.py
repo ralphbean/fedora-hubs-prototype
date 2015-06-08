@@ -18,7 +18,7 @@ template = jinja2.Template("""
 """)
 
 from hubs.widgets.chrome import panel
-chrome = panel("Daily Activity")
+chrome = panel("Weekly Activity")
 
 
 @argument(name="username",
@@ -26,7 +26,16 @@ chrome = panel("Daily Activity")
           validator=validators.username,
           help="A FAS username.")
 def data(session, widget, username):
-    url = "https://apps.fedoraproject.org/datagrepper/charts/line?delta=86400&N=12&style=clean&height=300&fill=true&user={username}"
+    categories = ['git', 'Wiki', 'Copr', 'anitya', 'mirrormanager', 'ansible',
+                  'fedoratagger', 'Pkgdb', 'summershum', 'nuancier', 'Mailman',
+                  'fedbadges', 'FMN', 'koschei', 'compose', 'fedimg',
+                  'Jenkins', 'irc', 'FAS', 'buildsys', 'Askbot', 'pagure',
+                  'Bodhi', 'faf', 'kerneltest', 'github', 'Trac', 'meetbot',
+                  'planet', 'fedocal', 'hotness']
+    categories = [c.lower() for c in categories]
+    categories = "&".join(['category=%s' % c for c in categories ])
+    url = "https://apps.fedoraproject.org/datagrepper/charts/stackedline?delta=604800&N=12&style=clean&height=300&fill=true&user={username}&split_on=categories"
+    url = url + "&" + categories
     url = url.format(username=username)
     return dict(url=url)
 
