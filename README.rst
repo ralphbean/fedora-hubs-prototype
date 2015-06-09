@@ -31,7 +31,7 @@ And then navigate to http://localhost:5000/designteam
 If you want to test it with 8 worker threads, try ``gunicorn``::
 
     $ pip install gunicorn
-    $ gunicorn -w 8 hubs.app:app
+    $ gunicorn -w 8 hubs.app:app -t 60 --reload
 
 Hacking on Widgets one-liner::
 
