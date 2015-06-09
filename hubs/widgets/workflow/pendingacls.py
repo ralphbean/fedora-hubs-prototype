@@ -12,8 +12,10 @@ import hubs.validators as validators
 # TODO -- add approve/deny buttons or just link through to pkgdb
 template = jinja2.Template("""
 {% if pending_acls %}
+{% if session['nickname'] == username %}
 <a class="btn btn-success" target="_blank" href="https://admin.fedoraproject.org/pkgdb/acl/pending/">Manage requests</a>
 <hr/>
+{% endif %}
 <ul class="media-list">
 {% for acl in pending_acls %}
     <li class="media">
@@ -55,6 +57,7 @@ def data(session, widget, username):
     data = response.json()
     for acl in data['pending_acls']:
         acl['avatar'] = username2avatar(acl['user'], s=32)
+    data['username'] = username
     return data
 
 

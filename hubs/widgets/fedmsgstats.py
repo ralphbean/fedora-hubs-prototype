@@ -2,8 +2,12 @@ from hubs.hinting import hint
 from hubs.widgets.chrome import panel
 
 import jinja2
-
 import requests
+
+import fedmsg.config
+import fedmsg.meta
+
+config = fedmsg.config.load_config()
 
 chrome = panel()
 template = jinja2.Template("""
@@ -12,7 +16,9 @@ template = jinja2.Template("""
     <tr><th>FedMsgs</th><th>Subscribers</th></tr>
     <tr class="text-info"><td>{{fedmsgs}}</td><td>{{subscribers}}</td></tr>
   </table>
+  {% if session['nickname'] != username %}
   <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
+  {% endif %}
 </div>
 """)
 
@@ -23,6 +29,7 @@ def data(session, widget, username):
     response = requests.get(url)
     fedmsgs = response.json()['total']
     return dict(
+        username=username,
         fedmsgs=fedmsgs,
         subscribers=len(widget.hub.subscribers),
     )

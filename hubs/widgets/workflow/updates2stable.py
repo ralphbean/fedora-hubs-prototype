@@ -11,8 +11,10 @@ import hubs.validators as validators
 # TODO -- add approve/deny buttons or just link through to pkgdb
 template = jinja2.Template("""
 {% if updates %}
+{% if session['nickname'] == username %}
 <a class="btn btn-success" target="_blank" href="https://admin.fedoraproject.org/updates/mine">Manage updates</a>
 <hr/>
+{% endif %}
 <ul class="media-list">
 {% for update in updates %}
     <li class="media">

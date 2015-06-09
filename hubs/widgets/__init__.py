@@ -74,6 +74,15 @@ def prepare_registry(registry):
 validate_registry(registry)
 prepare_registry(registry)
 
+
+def get_site_vars():
+    import flask
+    return dict(
+        session=flask.app.session,
+        g=flask.g,
+    )
+
+
 def render(module, session, widget, *args, **kwargs):
     """ Main API entry point.
 
@@ -81,6 +90,9 @@ def render(module, session, widget, *args, **kwargs):
     """
     # The API returns exactly this data.  Shared cache
     data = module.data(session, widget, *args, **kwargs)
+
+    # Also expose some site-level info to the widget here at render-time
+    data.update(get_site_vars())
 
     # Use the API data to fill out a template, and potentially decorate it.
     return module.render(**data)
