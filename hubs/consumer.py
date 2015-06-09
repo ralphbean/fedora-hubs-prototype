@@ -28,10 +28,10 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         if not self.uri:
             raise ValueError('hubs.sqlalchemy.uri must be present')
 
-        self.hint_cache_lock = threading.Lock()
+        self.hint_lookup_lock = threading.Lock()
         session = self.make_session()
-        with self.hint_cache_lock:
-            self.rebuild_hubs_hint_caches(session)
+        with self.hint_lookup_lock:
+            self.rebuild_hubs_hint_lookups(session)
         session.commit()  # transaction is committed here
         session.close()
 
@@ -40,7 +40,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
     def make_session(self):
         return hubs.models.init(self.uri)
 
-    def rebuild_hubs_hint_caches(self, session):
+    def rebuild_hubs_hint_lookups(self, session):
         self.checks_by_topic = collections.defaultdict(list)
         self.checks_by_category = collections.defaultdict(list)
         self.checks_by_username = collections.defaultdict(list)
@@ -63,8 +63,13 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
             for username in usernames:
                 self.checks_by_username[username].append((check, widget,))
 
+        log.info("Lookup sizes are:")
+        log.info("- %i topics" % len(self.checks_by_topic))
+        log.info("- %i categories" % len(self.checks_by_category))
+        log.info("- %i usernames" % len(self.checks_by_username))
+
     @property
-    def cache_initialized(self):
+    def lookup_initialized(self):
         return self.checks_by_topic and self.checks_by_category
 
     def consume(self, raw_msg):
@@ -89,11 +94,11 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         log.info("CacheInvalidatorExtraordinaire received %s %s",
                   msg['msg_id'], msg['topic'])
 
-        if category == 'hubs' or not self.cache_initialized:
+        if category == 'hubs' or not self.lookup_initialized:
             # Someone has modified an object in the hubs database, so let's
-            # rebuild our cache of our own database.
-            with self.hint_cache_lock:
-                self.rebuild_hubs_hint_caches(session)
+            # rebuild our lookup table of our own database.
+            with self.hint_lookup_lock:
+                self.rebuild_hubs_hint_lookups(session)
 
         # Begin our real work.
         # Find which widgets should have their caches nuked and make it so.
