@@ -6,15 +6,16 @@ import hubs.models
 def add_user_widgets(session, hub, username, fullname):
     """ Some defaults for an individual user's hub. """
     widget = hubs.models.Widget(
-        plugin='sticky', index=0, left=True,
+        plugin='fedmsgs', index=0, left=True,
         _config=json.dumps({
-            'text': 'TODO -- Put a fancy graph here...',
+            'username': username,
         }))
     hub.widgets.append(widget)
     widget = hubs.models.Widget(
-        plugin='fedmsgs', index=1, left=True,
+        plugin='feed', index=1, left=True,
         _config=json.dumps({
             'username': username,
+            'fmn_context': 'irc',  # TODO -- make this 'hubs'
         }))
     hub.widgets.append(widget)
 

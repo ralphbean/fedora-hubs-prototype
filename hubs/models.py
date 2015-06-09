@@ -99,6 +99,8 @@ class Hub(BASE):
     def by_name(cls, session, name):
         return session.query(cls).filter_by(name=name).first()
 
+    get = by_name
+
     @classmethod
     def create_user_hub(cls, session, username, fullname):
         hub = cls(name=username, summary=fullname)

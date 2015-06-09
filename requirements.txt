@@ -5,3 +5,9 @@ dogpile.cache
 fedmsg_meta_fedora_infrastructure
 flask-openid
 munch
+arrow
+fmn.lib
+fmn.rules
+datanommer.models
+fb-re2
+psycopg2

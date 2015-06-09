@@ -4,7 +4,9 @@ import collections
 import threading
 import time
 
+import datanommer.models
 import fedmsg.consumers
+import fedmsg.meta
 
 import hubs.models
 
@@ -28,12 +30,17 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         if not self.uri:
             raise ValueError('hubs.sqlalchemy.uri must be present')
 
+        fedmsg.meta.make_processors(**self.hub.config)
+
         self.hint_lookup_lock = threading.Lock()
         session = self.make_session()
         with self.hint_lookup_lock:
             self.rebuild_hubs_hint_lookups(session)
         session.commit()  # transaction is committed here
         session.close()
+
+        datanommer.models.init(self.hub.config['datanommer.sqlalchemy.uri'])
+
         log.debug("CacheInvalidatorExtraordinaire initialized")
 
     def make_session(self):

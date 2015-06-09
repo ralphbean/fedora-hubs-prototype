@@ -1,14 +1,21 @@
 import functools
+import logging
 import os
 
 import flask
+import flask.json
 import munch
 
 from flask.ext.openid import OpenID
 
 import hubs.models
 
+import datanommer.models
+
+
 app = flask.Flask(__name__)
+
+logging.basicConfig()
 
 
 # TODO - put this in config so we can migrate to pagure
@@ -16,15 +23,30 @@ app = flask.Flask(__name__)
 #        the right tag to link people to.  AGPL ftw.
 SOURCE_URL = 'https://pagure.io/fedora-hubs/blob/develop/f'#/hubs/widgets/badges.py'
 
-
 app.config.from_object('hubs.default_config')
 if 'HUBS_CONFIG' in os.environ:
     app.config.from_envvar('HUBS_CONFIG')
 
 import fedmsg.config
+import fedmsg.meta
 fedmsg_config = fedmsg.config.load_config()
+fedmsg.meta.make_processors(**fedmsg_config)
 
 session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'])
+datanommer.models.init(fedmsg_config['datanommer.sqlalchemy.uri'])
+
+
+class CustomJSONEncoder(flask.json.JSONEncoder):
+    def default(self, o):
+        try:
+            iterable = iter(o)
+        except TypeError:
+            pass
+        else:
+            return list(iterable)
+        return flask.json.JSONEncoder.default(self, o)
+
+app.json_encoder = CustomJSONEncoder
 
 
 @app.route('/')

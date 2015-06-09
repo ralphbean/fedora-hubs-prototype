@@ -19,8 +19,15 @@ print "Looking for account %r" % openid
 user = hubs.models.User.get(session, openid)
 if not user:
     print "No such user %r" % openid
-    sys.exit(1)
+else:
+    print "Found %r.  Deleting." % user
+    session.delete(user)
 
-print "Found %r.  Deleting." % user
-session.delete(user)
+hub = hubs.models.Hub.get(session, username)
+if not hub:
+    print "No such hub %r" % username
+else:
+    print "Found %r.  Deleting." % hub
+    session.delete(hub)
+
 session.commit()

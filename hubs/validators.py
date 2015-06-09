@@ -13,3 +13,9 @@ def link(session, value):
 def username(session, value):
     openid = 'http://%s.id.fedoraproject.org/' % value
     return not hubs.models.User.by_openid(session, openid) is None
+
+def fmn_context(session, value):
+    # TODO get this from the fedmsg config.
+    return value in [
+        'irc', 'email', 'android', 'desktop', 'hubs',
+    ]
