@@ -46,7 +46,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         self.checks_by_username = collections.defaultdict(list)
 
         widgets = session.query(hubs.models.Widget).all()
-        log.info("Comparing message against %i widgets" % len(widgets))
+        log.info("Building lookup from  %i total widgets" % len(widgets))
         for widget in widgets:
             check = widget.module.should_invalidate
 
@@ -59,7 +59,8 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
             for category in check.hints['categories']:
                 self.checks_by_category[category].append((check, widget,))
 
-            for username in check.hints['usernames_function']:
+            usernames = check.hints['usernames_function'](widget)
+            for username in usernames:
                 self.checks_by_username[username].append((check, widget,))
 
     @property
@@ -99,16 +100,16 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
 
         # Start this by finding a subset of widget checks that might match this
         # message. Look them up based on the hints they declare.
-        checks = \
-            set(self.checks_by_topic[topic]) + \
-            set(self.checks_by_category[category])
+        checks = set(
+            self.checks_by_topic[topic] + self.checks_by_category[category]
+        )
         log.info("Found %i checks to try for this message" % len(checks))
 
         # Then, with that hopefully smaller list of checks, try them all and
         # see if any tell us that we should nuke various data caches.
         for check, widget in checks:
             if check(msg, session, widget):
-                log.info("Invalidating cache for %r" % widget)
+                log.info("! Invalidating cache for %r" % widget)
                 # Invalidate the cache...
                 invalidate_cache(widget.module, **widget.config)
                 # Rebuild it.

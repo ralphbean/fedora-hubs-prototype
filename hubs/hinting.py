@@ -1,4 +1,3 @@
-import collections
 import decorator
 
 import fedmsg.config
@@ -22,7 +21,7 @@ def hint(topics=None, categories=None, usernames=None):
         wrapped.hints = dict(
             topics=topics,
             categories=categories,
-            username_function=usernames,
+            usernames_function=usernames,
         )
         return wrapped
 
