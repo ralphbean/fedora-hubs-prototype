@@ -5,17 +5,8 @@ config = {
     'hubs.sqlalchemy.uri': 'sqlite:////var/tmp/hubs.db',
 
     'endpoints': {
-        # TODO -- fill these out later...
+        "fedora-infrastructure": [
+            "tcp://hub.fedoraproject.org:9940",
+        ]
     },
-
-    'logging': dict(
-        version=1,
-        loggers=dict(
-            hubs={
-                "level": "DEBUG",
-                "propagate": False,
-                "handlers": ["console"],
-            },
-        ),
-    ),
 }

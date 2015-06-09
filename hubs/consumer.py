@@ -19,7 +19,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
     config_key = 'hubs.consumer.enabled'
 
     def __init__(self, *args, **kwargs):
-        log.info("CacheInvalidatorExtraordinaire initializing")
+        log.debug("CacheInvalidatorExtraordinaire initializing")
         super(CacheInvalidatorExtraordinaire, self).__init__(*args, **kwargs)
 
         self.uri = self.hub.config.get('hubs.sqlalchemy.uri', None)
@@ -34,8 +34,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
             self.rebuild_hubs_hint_lookups(session)
         session.commit()  # transaction is committed here
         session.close()
-
-        log.info("CacheInvalidatorExtraordinaire initialized")
+        log.debug("CacheInvalidatorExtraordinaire initialized")
 
     def make_session(self):
         return hubs.models.init(self.uri)
@@ -91,7 +90,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
                 return
 
         start = time.time()
-        log.info("CacheInvalidatorExtraordinaire received %s %s",
+        log.debug("CacheInvalidatorExtraordinaire received %s %s",
                   msg['msg_id'], msg['topic'])
 
         if category == 'hubs' or not self.lookup_initialized:
@@ -108,7 +107,12 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
         checks = set(
             self.checks_by_topic[topic] + self.checks_by_category[category]
         )
-        log.info("Found %i checks to try for this message" % len(checks))
+
+        statement = "Found %i checks to try for this message" % len(checks)
+        if checks:
+            log.info(statement)
+        else:
+            log.debug(statement)
 
         # Then, with that hopefully smaller list of checks, try them all and
         # see if any tell us that we should nuke various data caches.
@@ -121,7 +125,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
                 widget.module.data(session, widget, **widget.config)
                 # TODO -- fire off an EventSource notice that we updated stuff
 
-        log.info("Done.  %0.2fs %s %s",
+        log.debug("Done.  %0.2fs %s %s",
                   time.time() - start, msg['msg_id'], msg['topic'])
 
     def stop(self):
