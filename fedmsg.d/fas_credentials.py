@@ -1,13 +1,15 @@
-import commands
 import getpass
 import os
+
 
 username = os.environ.get('BODHI_USER')
 if not username:
     username = raw_input('FAS username: ')
 
 if os.path.exists('/usr/bin/pass'):
-    password = commands.getoutput('pass sys/fas')
+    import sh  # You'll need to pip install this
+    cmd = sh.Command('pass')
+    password = cmd('sys/fas').strip()
 else:
     password = getpass.getpass('FAS password: ')
 

@@ -21,7 +21,11 @@ config = {
         "backend": "dogpile.cache.dbm",
         "expiration_time": 300,
         "arguments": {
-            "filename": "/var/tmp/fmn-cache.dbm",
+            "filename": "/var/tmp/fmn-cache.db",
         },
     },
+
+    # Run datanommer locally, just for development.
+    'datanommer.enabled': True,
+    'datanommer.sqlalchemy.url': 'postgres://postgres:laksjdf@127.0.0.1/datanommer',
 }
