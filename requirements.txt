@@ -9,5 +9,4 @@ arrow
 fmn.lib
 fmn.rules
 datanommer.models
-fb-re2
 psycopg2
