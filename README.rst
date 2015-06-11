@@ -9,13 +9,13 @@ Install fedora dependencies:
 
     $ sudo dnf install gcc gcc-c++ sqlite-devel 
 
-Hubs should work on python2 **and** python3, so let's default to python3 and
-see how that goes.
+Hubs should work on either python2 **or** python3.  These instructions will
+show the way for python2 only, though.
 
 Setup a python virtualenv::
 
-    $ sudo yum install python-virtualenvwrapper
-    $ mkvirtualenv --python=$(which python3) hubs
+    $ sudo dnf install python-virtualenvwrapper
+    $ mkvirtualenv hubs
 
 Install the dependencies from PyPI::
 
@@ -23,8 +23,8 @@ Install the dependencies from PyPI::
 
 Try running it with::
 
-    $ PYTHONPATH=. python3 populate.py  # To create the db
-    $ PYTHONPATH=. python3 hubs/app.py  # To run the dev server
+    $ PYTHONPATH=. python populate.py  # To create the db
+    $ PYTHONPATH=. python hubs/app.py  # To run the dev server
 
 And then navigate to http://localhost:5000/designteam
 
@@ -35,7 +35,7 @@ If you want to test it with 8 worker threads, try ``gunicorn``::
 
 Hacking on Widgets one-liner::
 
-    $ rm /var/tmp/hubs.db; PYTHONPATH=. python3 populate.py; gunicorn -w 8 hubs.app:app
+    $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 hubs.app:app
 
 Internal design
 ---------------
