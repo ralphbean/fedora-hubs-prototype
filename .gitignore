@@ -1,2 +1,3 @@
 *.pyc
 *.egg*
+fedmsg.d/fas_credentials.py
