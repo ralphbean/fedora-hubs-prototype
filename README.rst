@@ -21,7 +21,20 @@ Install the dependencies from PyPI::
 
     $ pip install -r requirements.txt
 
-Try running it with::
+Give fedora-hubs some FAS credentials.  It's going to need these to query FAS
+for information about other users.  When we deploy this thing to production,
+we'll use a system account for this but for now, just use your personal
+account.  Copy the following into ``fedmsg.d/fas_credentials.py``::
+
+    config = {
+        'fas_credentials': {
+            'username': 'YOUR_FAS_USERNAME_GOES_HERE',
+            'password': 'YOUR_FAS_PASSWORD_GOES_HERE',
+        }
+    }
+
+
+With that, try running the app with::
 
     $ PYTHONPATH=. python populate.py  # To create the db
     $ PYTHONPATH=. python hubs/app.py  # To run the dev server
