@@ -60,34 +60,17 @@ def index():
 @app.route('/<name>')
 @app.route('/<name>/')
 def hub(name):
-    hub = session.query(hubs.models.Hub)\
-        .filter(hubs.models.Hub.name==name)\
-        .first()
-
-    if not hub:
-        flask.abort(404)
-
+    hub = get_hub(session, name)
     return flask.render_template('hubs.html', hub=hub, session=session)
 
 
-def get_widget(session, hub, idx):
-    try:
-        idx = int(idx)
-    except TypeError:
-        flask.abort(404)
-
-    hub = session.query(hubs.models.Hub)\
-        .filter(hubs.models.Hub.name==hub)\
-        .first()
-
-    if not hub:
-        flask.abort(404)
-
-    for widget in hub.widgets:
-        if widget.idx == idx:
-            return widget
-
-    flask.abort(404)
+@app.route('/<name>/json')
+@app.route('/<name>/json/')
+def hub_json(name):
+    hub = get_hub(session, name)
+    response = flask.jsonify(hub.__json__(session))
+    # TODO -- modify headers with response.headers['X-fedora-hubs-wat'] = 'foo'
+    return response
 
 
 @app.route('/<hub>/<idx>')
@@ -101,16 +84,8 @@ def widget_render(hub, idx):
 @app.route('/<hub>/<idx>/json/')
 def widget_json(hub, idx):
     widget = get_widget(session, hub, idx)
-    from hubs.widgets import registry
-    module = registry[widget.plugin]
-    data = module.data(session, widget, **widget.config)
-    response = flask.jsonify(data)
-
-    # We don't actually need these two headers.  Just messing around.
-    response.headers['X-fedora-hubs-hub-name'] = hub
-    response.headers['X-fedora-hubs-widget-id'] = idx
-    # TODO -- add other headers here as we decide we need them.
-
+    response = flask.jsonify(widget.__json__(session))
+    # TODO -- modify headers with response.headers['X-fedora-hubs-wat'] = 'foo'
     return response
 
 
@@ -221,6 +196,36 @@ def check_auth():
         flask.g.auth.fullname = flask.session.get('fullname', None)
         flask.g.auth.nickname = flask.session.get('nickname', None)
         flask.g.auth.email = flask.session.get('email', None)
+
+
+def get_hub(session, name):
+    """ Utility shorthand to get a hub and 404 if not found. """
+    hub = session.query(hubs.models.Hub)\
+        .filter(hubs.models.Hub.name==name)\
+        .first()
+
+    if not hub:
+        flask.abort(404)
+
+    return hub
+
+
+def get_widget(session, hub, idx):
+    """ Utility shorthand to get a widget and 404 if not found. """
+    try:
+        idx = int(idx)
+    except TypeError:
+        flask.abort(404)
+
+    hub = get_hub(session, hub)
+
+    for widget in hub.widgets:
+        if widget.idx == idx:
+            return widget
+
+    flask.abort(404)
+
+
 
 
 

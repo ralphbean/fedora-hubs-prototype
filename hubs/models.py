@@ -123,9 +123,20 @@ class Hub(BASE):
             [w for w in self.widgets if not w.left],
             key=lambda w: w.index)
 
-    def __json__(self, reify=False):
+    def __json__(self, session):
         return {
             'name': self.name,
+            'summary': self.summary,
+
+            # TODO -- splash image
+
+            'widgets': [widget.idx for widget in self.widgets],
+            'left_width': self.left_width,
+
+            # TODO -- these three need to be fleshed out with real fas data.
+            'owners': self.owners,
+            'members': self.members,
+            'subscribers': self.subscribers,
         }
 
 def _config_default(context):
@@ -154,9 +165,19 @@ class Widget(BASE):
     def config_setter(self, config):
         self._config = json.dumps(config)
 
-    def __json__(self, reify=False):
+    def __json__(self, session):
+        module = hubs.widgets.registry[self.plugin]
+        data = module.data(session, self, **self.config)
         return {
+            'id': self.idx,
+            # TODO -- use flask.url_for to get the url for this widget
             'plugin': self.plugin,
+            'description': module.__doc__,
+            'hub': self.hub_id,
+            'left': self.left,
+            'index': self.index,
+            'data': data,
+            'config': self.config,
         }
 
     @property
@@ -174,10 +195,14 @@ class User(BASE):
     fullname = sa.Column(sa.Text)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
 
-    def __json__(self, reify=False):
+    def __json__(self, session):
         return {
+            'username': self.username,
             'openid': self.openid,
+            'fullname': self.fullname,
             'created_on': self.created_on,
+            # We'll need hubs subscribed to, owned, etc..
+            #'hubs': [hub.idx for hub in self.hubx],
         }
 
     @property
