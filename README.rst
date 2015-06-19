@@ -14,7 +14,7 @@ show the way for python2 only, though.
 
 Setup a python virtualenv::
 
-    $ sudo dnf install python-virtualenvwrapper
+    $ sudo dnf install python-virtualenvwrapper postgresql postgresql-devel
     $ mkvirtualenv hubs
 
 Install the dependencies from PyPI::
