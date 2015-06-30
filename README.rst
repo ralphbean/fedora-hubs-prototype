@@ -39,6 +39,7 @@ called fas_credentials.py (``fedmsg.d/fas_credentials.py``) ::
         }
     }
 
+Make sure to leave the '' around you username and password - don't delete them!
 
 With that, try running the app with::
 
