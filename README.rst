@@ -29,7 +29,8 @@ Install the dependencies from PyPI::
 Give fedora-hubs some FAS credentials.  It's going to need these to query FAS
 for information about other users.  When we deploy this thing to production,
 we'll use a system account for this but for now, just use your personal
-account.  Copy the following into ``fedmsg.d/fas_credentials.py``::
+account.  Copy the following into a new file under the fedmsg.d directory
+called fas_credentials.py (``fedmsg.d/fas_credentials.py``) ::
 
     config = {
         'fas_credentials': {
