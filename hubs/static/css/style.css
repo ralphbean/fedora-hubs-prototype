@@ -18,10 +18,28 @@
     #logo { text-align: left; }
 
     .bookmarks .navbar.navbar-default {
-      background-color: #fff;
+      background: -webkit-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
+      background: -o-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
+      background: -moz-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
+      background: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
       margin-bottom: 0;
       text-align: center;
     }
+    
+    .bookmarks .navbar-nav > li > a {
+      padding-bottom: 4.5px;
+      padding-top: 4.5px;
+    }
+
+    /* Bookmarks Bar: active nav item styling */
+    .bookmarks .nav > .active > a,
+    .bookmarks .nav > .active > a:hover,
+    .bookmarks .nav > .active > a:focus {
+      color: #3c6eb4;
+      background-color: transparent;
+      border-bottom: 3px solid #3c6eb4;
+    }
+    
     .header {
       color: #ffffff;
       background-color: #3c6eb4;
