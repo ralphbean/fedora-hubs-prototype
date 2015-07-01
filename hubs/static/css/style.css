@@ -10,14 +10,13 @@
       background: -o-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
       background: -moz-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
       background: linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,1));
-      padding: 5px 12px 3px 12px;
+      padding: 5px 12px 5px 12px;
       font-family: 'Open Sans', 'sans-serif';
       font-size: 12pt;
     }
     
     #logo { text-align: left; }
-  /*  #logo img { padding-left: 1em; }
-    */
+
     .bookmarks .navbar.navbar-default {
       background-color: #fff;
       margin-bottom: 0;
