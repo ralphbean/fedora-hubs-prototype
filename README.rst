@@ -1,10 +1,10 @@
 Source on Pagure.io
--------------------
+===================
 
 The latest source is not on GitHub, it is on pagure.io.  You can find it at https://pagure.io/fedora-hubs
 
 Hacking
--------
+=======
 Install fedora dependencies::
 
     $ sudo dnf install gcc gcc-c++ sqlite-devel 
@@ -56,8 +56,89 @@ the db alltogether, re-populates it, and restarts the app::
 
     $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 hubs.app:app
 
+Feed Widget - the Extra Mile
+----------------------------
+
+One widget (the big tamale -- the feed widget) requires more legwork to stand
+up.  If you just want to see how hubs works and you want to hack on other
+peripheral stuff around it, you don't need to bother with these steps.
+
+The feed widget requires a direct DB connection to the datanommer
+database; it can't proxy through datagrepper because it needs more
+flexibility.  To get this working, you're going to set up:
+
+- a postgres db
+- the datanommer daemon
+
+Start with some required packages::
+
+    $ sudo dnf install postgresql-server python-datanommer-consumer datanommer-commands fedmsg-hub
+
+And there are some support libraries you'll also need::
+
+    $ sudo dnf install python-psycopg2 python-fedmsg-meta-fedora-infrastructure
+
+Now, with packages installed, you need to tell postgres to create its initial filesystem layout::
+
+    $ sudo postgresql-setup initdb
+
+And then, we need to tweak its config to let us connect easily for development::
+
+    $ sudo vim /var/lib/pgsql/data/pg_hba.conf
+
+Change **two lines** from ``ident`` to ``trust``.  These two::
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            trust
+    # IPv6 local connections:
+    host    all             all             ::1/128                 trust
+
+Start that beast up::
+
+    $ sudo systemctl start postgresql
+
+Now, with the db daemon configured and running, let's configure datanommer.  Edit this file::
+
+    $ sudo vim /etc/fedmsg.d/datanommer.py
+
+And do two things:  1) set enabled to ``True`` and 2) give it a real sqlalchemy url, like this::
+
+    config = {
+        'datanommer.enabled': True,
+        'datanommer.sqlalchemy.url': 'postgres://postgres:whatever@localhost/datanommer',
+    }
+
+Tell postgres that it should create space for a 'datanommer' database with this command::
+
+    $ sudo -u postgres psql -c "CREATE DATABASE datanommer;"
+
+And finally, tell datanommer to create all of its tables in that new db we just created::
+
+    $ datanommer-create-db
+
+Tell the fedmsg-hub daemon to restart itself.  It should pick up datanommer as a plugin and start handing messages to it::
+
+    $ sudo systemctl restart fedmsg-hub
+
+And then, wait a few seconds for a message to get nommed, and then you can
+check that it's working by running ``sudo datanommer-stats``.  It should print
+out some kind of summary about what kinds of messages are in the db now -- it
+will just grow and grow over time::
+
+    $ datanommer-stats
+    [2015-07-01 14:33:21][    fedmsg    INFO] buildsys has 70 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] faf has 7 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] copr has 6 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] askbot has 2 entries
+
+**Lastly**, (fingers crossed) start up the fedora-hubs webapp and load your
+profile page.  Once there are some messages that get into your local database
+that *should* show up on your feed.. they should appear there.  (At very least,
+you shouldn't get an error message about that widget being unable to be
+displayed).
+
 Internal design
----------------
+===============
 
 You write a new widget in the ``hubs/widgets/`` directory and must declare it
 in the registry dict in ``hubs/widgets/__init__.py``.
