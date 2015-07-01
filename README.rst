@@ -5,7 +5,7 @@ The latest source is not on GitHub, it is on pagure.io.  You can find it at http
 
 Hacking
 -------
-Install fedora dependencies:
+Install fedora dependencies::
 
     $ sudo dnf install gcc gcc-c++ sqlite-devel 
 
@@ -44,14 +44,15 @@ With that, try running the app with::
     $ PYTHONPATH=. python populate.py  # To create the db
     $ PYTHONPATH=. python hubs/app.py  # To run the dev server
 
-And then navigate to http://localhost:5000/designteam
+And then navigate to http://localhost:5000/
 
 If you want to test it with 8 worker threads, try ``gunicorn``::
 
     $ pip install gunicorn
     $ gunicorn -w 8 hubs.app:app -t 60 --reload
 
-Hacking on Widgets one-liner::
+When hacking on widgets, it is useful to have this one-liner handy.  It removes
+the db alltogether, re-populates it, and restarts the app::
 
     $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 hubs.app:app
 
@@ -70,7 +71,7 @@ in the registry dict in ``hubs/widgets/__init__.py``.
 
 In order to be valid, a widget must have:
 
-- A ``data(request, session, widgets, **kwargs)`` function that returns a
+- A ``data(session, widgets, **kwargs)`` function that returns a
   jsonifiable dict of data.  This will get cached -- more on that later.
 - A ``template`` object that is a jinja2 template for that widget.
 - Optionally, a ``chrome`` decorator.
