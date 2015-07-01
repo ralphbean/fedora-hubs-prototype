@@ -59,13 +59,6 @@ the db alltogether, re-populates it, and restarts the app::
 Internal design
 ---------------
 
-There's no authn or user information at all currently.  There are only:
-
-- widgets
-- hubs (which are just collections of widgets)
-
-How things are currently (they don't have to stay this way):
-
 You write a new widget in the ``hubs/widgets/`` directory and must declare it
 in the registry dict in ``hubs/widgets/__init__.py``.
 
@@ -75,9 +68,6 @@ In order to be valid, a widget must have:
   jsonifiable dict of data.  This will get cached -- more on that later.
 - A ``template`` object that is a jinja2 template for that widget.
 - Optionally, a ``chrome`` decorator.
-
-This isn't implemented yet, but they're going to need:
-
 - A ``should_invalidate(message, session, widget)`` function that will be used to
   *potentially* invalidate the widget's cache. That function will get called by
   a backend daemon listening for fedmsg messages so when you update your group
@@ -94,10 +84,13 @@ Furthermore, a proposal:
   rendering all of the widgets asynchronously on the client.  It could be cool,
   but is new-ground for our team.
 
-Still more proposals:
+  Furthermore, we should likely use something like angular **or** backbone.js
+  to manage the data synchronization with those client-side templates.
+
+Some discussion on how to do pushed updates to web clients:
 
 - We could re-use the existing websocket service we have at
-  wss://hub.fedoraproject.org:9939 but it has some problems:
+  ``wss://hub.fedoraproject.org:9939`` but it has some problems:
 - It is very inflexible.  You can subscribe to fedmsg *topics* and then you
   receive the firehose of those topics. For a widget, we already have to write
   a 'cache invalidation' function that listens for messages and then somehow
@@ -125,8 +118,7 @@ worried *only* about these per-widget JSON responses.
 A picture is worth...
 ---------------------
 
-This is more "proposal" territory.  None of this is implemented, but here are
-some more details on how the whole thing should work together.
+Here are some more details on how the whole thing should work together.
 
 .. figure:: https://raw.githubusercontent.com/ralphbean/fedora-hubs-prototype/develop/docs/diagram.png
    :scale: 50 %
