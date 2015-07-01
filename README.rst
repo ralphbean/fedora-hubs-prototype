@@ -17,8 +17,8 @@ Setup a python virtualenv::
     $ sudo dnf install python-virtualenvwrapper postgresql postgresql-devel
     $ mkvirtualenv hubs
 
-If the mkvirtualenv command returns "command not found..." you may need to 
-refresh your bash profile:
+If the mkvirtualenv command returns "command not found..." you may need to
+refresh your bash profile::
 
     $ source ~/.bashrc
 
