@@ -1,11 +1,11 @@
 Source on Pagure.io
--------------------
+===================
 
 The latest source is not on GitHub, it is on pagure.io.  You can find it at https://pagure.io/fedora-hubs
 
 Hacking
--------
-Install fedora dependencies:
+=======
+Install fedora dependencies::
 
     $ sudo dnf install gcc gcc-c++ sqlite-devel 
 
@@ -17,8 +17,8 @@ Setup a python virtualenv::
     $ sudo dnf install python-virtualenvwrapper postgresql postgresql-devel
     $ mkvirtualenv hubs
 
-If the mkvirtualenv command returns "command not found..." you may need to 
-refresh your bash profile:
+If the mkvirtualenv command returns "command not found..." you may need to
+refresh your bash profile::
 
     $ source ~/.bashrc
 
@@ -46,39 +46,111 @@ With that, try running the app with::
     $ PYTHONPATH=. python populate.py  # To create the db
     $ PYTHONPATH=. python hubs/app.py  # To run the dev server
 
-And then navigate to http://localhost:5000/designteam
+And then navigate to http://localhost:5000/
 
 If you want to test it with 8 worker threads, try ``gunicorn``::
 
     $ pip install gunicorn
     $ gunicorn -w 8 hubs.app:app -t 60 --reload
 
-Hacking on Widgets one-liner::
+When hacking on widgets, it is useful to have this one-liner handy.  It removes
+the db alltogether, re-populates it, and restarts the app::
 
     $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 hubs.app:app
 
+Feed Widget - the Extra Mile
+----------------------------
+
+One widget (the big tamale -- the feed widget) requires more legwork to stand
+up.  If you just want to see how hubs works and you want to hack on other
+peripheral stuff around it, you don't need to bother with these steps.
+
+The feed widget requires a direct DB connection to the datanommer
+database; it can't proxy through datagrepper because it needs more
+flexibility.  To get this working, you're going to set up:
+
+- a postgres db
+- the datanommer daemon
+
+Start with some required packages::
+
+    $ sudo dnf install postgresql-server python-datanommer-consumer datanommer-commands fedmsg-hub
+
+And there are some support libraries you'll also need::
+
+    $ sudo dnf install python-psycopg2 python-fedmsg-meta-fedora-infrastructure
+
+Now, with packages installed, you need to tell postgres to create its initial filesystem layout::
+
+    $ sudo postgresql-setup initdb
+
+And then, we need to tweak its config to let us connect easily for development::
+
+    $ sudo vim /var/lib/pgsql/data/pg_hba.conf
+
+Change **two lines** from ``ident`` to ``trust``.  These two::
+
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            trust
+    # IPv6 local connections:
+    host    all             all             ::1/128                 trust
+
+Start that beast up::
+
+    $ sudo systemctl start postgresql
+
+Now, with the db daemon configured and running, let's configure datanommer.  Edit this file::
+
+    $ sudo vim /etc/fedmsg.d/datanommer.py
+
+And do two things:  1) set enabled to ``True`` and 2) give it a real sqlalchemy url, like this::
+
+    config = {
+        'datanommer.enabled': True,
+        'datanommer.sqlalchemy.url': 'postgres://postgres:whatever@localhost/datanommer',
+    }
+
+Tell postgres that it should create space for a 'datanommer' database with this command::
+
+    $ sudo -u postgres psql -c "CREATE DATABASE datanommer;"
+
+And finally, tell datanommer to create all of its tables in that new db we just created::
+
+    $ datanommer-create-db
+
+Tell the fedmsg-hub daemon to restart itself.  It should pick up datanommer as a plugin and start handing messages to it::
+
+    $ sudo systemctl restart fedmsg-hub
+
+And then, wait a few seconds for a message to get nommed, and then you can
+check that it's working by running ``sudo datanommer-stats``.  It should print
+out some kind of summary about what kinds of messages are in the db now -- it
+will just grow and grow over time::
+
+    $ datanommer-stats
+    [2015-07-01 14:33:21][    fedmsg    INFO] buildsys has 70 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] faf has 7 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] copr has 6 entries
+    [2015-07-01 14:33:21][    fedmsg    INFO] askbot has 2 entries
+
+**Lastly**, (fingers crossed) start up the fedora-hubs webapp and load your
+profile page.  Once there are some messages that get into your local database
+that *should* show up on your feed.. they should appear there.  (At very least,
+you shouldn't get an error message about that widget being unable to be
+displayed).
+
 Internal design
----------------
-
-There's no authn or user information at all currently.  There are only:
-
-- widgets
-- hubs (which are just collections of widgets)
-
-How things are currently (they don't have to stay this way):
+===============
 
 You write a new widget in the ``hubs/widgets/`` directory and must declare it
 in the registry dict in ``hubs/widgets/__init__.py``.
 
 In order to be valid, a widget must have:
 
-- A ``data(request, session, widgets, **kwargs)`` function that returns a
+- A ``data(session, widgets, **kwargs)`` function that returns a
   jsonifiable dict of data.  This will get cached -- more on that later.
 - A ``template`` object that is a jinja2 template for that widget.
 - Optionally, a ``chrome`` decorator.
-
-This isn't implemented yet, but they're going to need:
-
 - A ``should_invalidate(message, session, widget)`` function that will be used to
   *potentially* invalidate the widget's cache. That function will get called by
   a backend daemon listening for fedmsg messages so when you update your group
@@ -95,10 +167,13 @@ Furthermore, a proposal:
   rendering all of the widgets asynchronously on the client.  It could be cool,
   but is new-ground for our team.
 
-Still more proposals:
+  Furthermore, we should likely use something like angular **or** backbone.js
+  to manage the data synchronization with those client-side templates.
+
+Some discussion on how to do pushed updates to web clients:
 
 - We could re-use the existing websocket service we have at
-  wss://hub.fedoraproject.org:9939 but it has some problems:
+  ``wss://hub.fedoraproject.org:9939`` but it has some problems:
 - It is very inflexible.  You can subscribe to fedmsg *topics* and then you
   receive the firehose of those topics. For a widget, we already have to write
   a 'cache invalidation' function that listens for messages and then somehow
@@ -126,8 +201,7 @@ worried *only* about these per-widget JSON responses.
 A picture is worth...
 ---------------------
 
-This is more "proposal" territory.  None of this is implemented, but here are
-some more details on how the whole thing should work together.
+Here are some more details on how the whole thing should work together.
 
 .. figure:: https://raw.githubusercontent.com/ralphbean/fedora-hubs-prototype/develop/docs/diagram.png
    :scale: 50 %
