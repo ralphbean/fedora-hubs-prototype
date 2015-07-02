@@ -66,6 +66,7 @@
       visibility: hidden;
       max-height: 0px;
       overflow: hidden;
+      border: 0;
       transition: max-height 0.4s;
     }
 
@@ -74,7 +75,19 @@
       max-height: 100%;
     }
 
-//flexbox support
+/* generic widget styling */
+.widget .panel-default > .panel-heading {
+    font-family: 'Open Sans', 'sans-serif';
+    color: #fff;
+    background-color: #a7a9ac;
+    border-radius: 0;
+}
+
+.widget .panel-default > .panel-heading h3 {
+    font-weight: 700;
+}
+
+/* flexbox support */
 .flex-container {
     display: flex;
     flex-direction: row;
