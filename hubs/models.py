@@ -85,6 +85,24 @@ def init(db_url, debug=False, create=False):
     return scoped_session(sessionmaker(bind=engine))
 
 
+roles = ['subscriber', 'member', 'owner']
+
+
+class Association(BASE):
+    __tablename__ = 'association'
+
+    hub_id = sa.Column(sa.String(50),
+                       sa.ForeignKey('hubs.name'),
+                       primary_key=True)
+    user_id = sa.Column(sa.Text,
+                        sa.ForeignKey('users.openid'),
+                        primary_key=True)
+    role = sa.Column(sa.Enum(*roles), nullable=False)
+
+    user = relation("User", backref="associations")
+    hub = relation("Hub", backref="associations")
+
+
 class Hub(BASE):
     __tablename__ = 'hubs'
     name = sa.Column(sa.String(50), primary_key=True)
@@ -103,6 +121,14 @@ class Hub(BASE):
     owners = ['tatica', 'gnokii', 'duffy', 'ryanlerch']
     members = ['ralph', 'sadin', 'sayan'] + owners
     subscribers = []
+
+
+    def subscribe(self, session, user):
+        # TODO -- add logic here to manage not adding the user multiple
+        # times, doing different roles, etc.. publish a fedmsg message,
+        # etc...
+        session.add(Association(user=user, hub=self, role='subscriber'))
+        session.commit()
 
     @classmethod
     def by_name(cls, session, name):
@@ -245,5 +271,10 @@ class User(BASE):
             session.add(self)
             if not Hub.by_name(session, self.username):
                 Hub.create_user_hub(session, self.username, self.fullname)
+
+            # Subscribe self to some default hubs for now..
+            hub = Hub.by_name(session, 'designteam')
+            hub.subscribe(session, self)
+
             session.commit()
         return self
