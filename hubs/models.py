@@ -24,6 +24,7 @@
 import datetime
 import json
 import logging
+import random
 
 import sqlalchemy as sa
 from sqlalchemy import create_engine
@@ -38,6 +39,7 @@ import fedmsg.utils
 
 import hubs.defaults
 import hubs.widgets
+from hubs.utils import username2avatar
 
 
 class HubsBase(object):
@@ -56,6 +58,10 @@ class HubsBase(object):
 BASE = declarative_base(cls=HubsBase)
 
 log = logging.getLogger(__name__)
+
+
+placekitten = lambda: "https://placekitten.com/g/%i/%i" % (
+    random.randint(150,350), random.randint(150, 350))
 
 
 def init(db_url, debug=False, create=False):
@@ -87,6 +93,9 @@ class Hub(BASE):
     widgets = relation('Widget', backref=backref('hub'))
     left_width = sa.Column(sa.Integer, nullable=False, default=8)
 
+    # A URL to the "avatar" for this hub.
+    avatar = sa.Column(sa.String(256), default=placekitten)
+
     #fas_group = sa.Column(sa.String(32), nullable=False)
 
     # This is just some silly dev data.  eventually, connect this
@@ -103,7 +112,8 @@ class Hub(BASE):
 
     @classmethod
     def create_user_hub(cls, session, username, fullname):
-        hub = cls(name=username, summary=fullname)
+        hub = cls(name=username, summary=fullname,
+                  avatar=username2avatar(username))
         session.add(hub)
         hubs.defaults.add_user_widgets(session, hub, username, fullname)
 
@@ -195,10 +205,15 @@ class User(BASE):
     fullname = sa.Column(sa.Text)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
 
+    @property
+    def avatar(self):
+        return username2avatar(self.username)
+
     def __json__(self, session):
         return {
             'username': self.username,
             'openid': self.openid,
+            'avatar': self.avatar,
             'fullname': self.fullname,
             'created_on': self.created_on,
             # We'll need hubs subscribed to, owned, etc..
