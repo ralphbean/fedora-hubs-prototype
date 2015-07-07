@@ -15,7 +15,7 @@ users = ['mrichard', 'duffy', 'ryanlerch', 'gnokii', 'nask0',
 for username in users:
     fullname = 'Full Name Goes Here'
     openid = '%s.id.fedoraproject.org' % username
-    print "Creating account for %r" % openid
+    print("Creating account for %r" % openid)
     hubs.models.User.get_or_create(
         session, openid=openid, fullname=fullname)
 
