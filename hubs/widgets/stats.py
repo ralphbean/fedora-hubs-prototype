@@ -20,11 +20,11 @@ template = jinja2.Template("""
     </form>
     {% elif g.auth.nickname in subscribers %}
     <form action="{{hub_unsubscribe_url}}" method="POST">
-        <button class="btn btn-warning">Unsubscribe</button>
+        <button class="btn btn-warning"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Unsubscribe</button>
     </form>
     {% else %}
     <form action="{{hub_subscribe_url}}" method="POST">
-        <button class="btn btn-info">Subscribe</button>
+        <button class="btn btn-info"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
     </form>
     {% endif %}
     </div>
