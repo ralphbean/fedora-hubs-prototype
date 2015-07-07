@@ -9,6 +9,9 @@ import six.moves.urllib_parse
 
 import fedmsg.config
 
+import logging
+log = logging.getLogger(__name__)
+
 config = fedmsg.config.load_config()
 cache_defaults = {
     "backend": "dogpile.cache.dbm",
@@ -48,26 +51,26 @@ def AGPLv3(name):
     return decorator
 
 
-def smartcache(module):
-    def decorator(func):
-        @wraps(func)
-        def inner(session, widget, *args, **kwargs):
-            key = cache_key_generator(module, args, kwargs)
-            creator = lambda: func(session, widget, *args, **kwargs)
-            return cache.get_or_create(key, creator)
+def smartcache(func):
+    @wraps(func)
+    def inner(session, widget, *args, **kwargs):
+        key = cache_key_generator(widget, args, kwargs)
+        creator = lambda: func(session, widget, *args, **kwargs)
+        log.debug("Accessing cache key %s", key)
+        return cache.get_or_create(key, creator)
 
-        return inner
-    return decorator
+    return inner
 
 
-def invalidate_cache(module, *args, **kwargs):
-    key = cache_key_generator(module, *args, **kwargs)
+def invalidate_cache(widget, *args, **kwargs):
+    key = cache_key_generator(widget, *args, **kwargs)
+    log.debug("Deleting cache key %s", key)
     cache.delete(key)
 
 
-def cache_key_generator(module, args, kwargs):
+def cache_key_generator(widget, args, kwargs):
     return "|".join([
-        module.__name__,
+        str(widget.idx),
         json.dumps(args),
         json.dumps(kwargs),
     ]).encode('utf-8')

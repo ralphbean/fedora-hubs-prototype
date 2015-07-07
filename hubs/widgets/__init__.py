@@ -71,7 +71,8 @@ def prepare_registry(registry):
         module.data = AGPLv3(name)(module.data)
 
         # Wrap the data functions in a cache layer to be invalidated by fedmsg
-        module.data = smartcache(module)(module.data)
+        # TODO -- we could just do this with a decorator to be explicit..
+        module.data = smartcache(module.data)
 
 
 validate_registry(registry)
