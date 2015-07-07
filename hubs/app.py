@@ -5,6 +5,7 @@ import os
 import flask
 import flask.json
 import munch
+import six
 
 from flask.ext.openid import OpenID
 
@@ -184,7 +185,12 @@ def check_auth():
     flask.g.fedmsg_config = fedmsg_config
     flask.g.auth = munch.Munch(logged_in=False)
     if 'openid' in flask.session:
-        openid = flask.session.get('openid').strip('/').split('/')[-1]
+
+        openid = flask.session.get('openid')
+        if isinstance(openid, six.binary_type):
+            openid = openid.decode('utf-8')
+        openid = openid.strip('/').split('/')[-1]
+
         flask.g.auth.logged_in = True
         flask.g.auth.openid = openid
         flask.g.auth.user = hubs.models.User.by_openid(session, openid)
