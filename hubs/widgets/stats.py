@@ -9,7 +9,7 @@ template = jinja2.Template("""
 <div class="stats-container">
   <table class="stats-table">
     <tr><th>Members</th><th>Subscribers</th></tr>
-    <tr class="text-info"><td>{{members | length}}</td><td>{{subscribers | length}}</td></tr>
+    <tr class="text-info"><td>{{members | length}}</td><td class="text-right">{{subscribers | length}}</td></tr>
   </table>
 
   {% if g.auth.logged_in %}

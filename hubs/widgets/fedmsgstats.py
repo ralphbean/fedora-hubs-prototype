@@ -14,7 +14,7 @@ template = jinja2.Template("""
 <div class="stats-container">
   <table class="stats-table">
     <tr><th>FedMsgs</th><th>Subscribers</th></tr>
-    <tr class="text-info"><td>{{fedmsgs}}</td><td>{{subscribers}}</td></tr>
+    <tr class="text-info"><td>{{fedmsgs}}</td><td class="text-right">{{subscribers}}</td></tr>
   </table>
   {% if session['nickname'] != username %}
   <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
