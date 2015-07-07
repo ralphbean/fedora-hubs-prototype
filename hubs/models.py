@@ -60,8 +60,7 @@ BASE = declarative_base(cls=HubsBase)
 log = logging.getLogger(__name__)
 
 
-placekitten = lambda: "https://placekitten.com/g/%i/%i" % (
-    random.randint(150,350), random.randint(150, 350))
+placekitten = lambda: "https://placekitten.com/g/320/320"
 
 
 def init(db_url, debug=False, create=False):
