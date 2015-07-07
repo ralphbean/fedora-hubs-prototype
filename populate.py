@@ -46,7 +46,7 @@ hub.widgets.append(widget)
 
 widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
                             _config=json.dumps({
-                                'text': 'This is a sticky note.',
+                                'text': "The Design Team is the design group of the Fedora project. Our interests are not only in creating graphics for use by the Fedora community, but also in advocating the use of the creative tools that are a part of Fedora.",
                             }))
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
@@ -87,7 +87,7 @@ hub.widgets.append(widget)
 
 widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
                             _config=json.dumps({
-                                'text': 'This is a sticky note.',
+                                'text': "The Infrastructure Team consists of dedicated volunteers and professionals managing the servers, building the tools and utilities, and creating new applications to make Fedora development a smoother process. We're located all over the globe and communicate primarily by IRC and e-mail. ",
                             }))
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
