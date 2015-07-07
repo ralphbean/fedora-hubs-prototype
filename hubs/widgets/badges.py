@@ -14,7 +14,8 @@ import hubs.validators as validators
 template = jinja2.Template("""
 <div class="flex-container">
 {% for badge in assertions[:10] %}
-    <img width="19%" src="{{badge['image']}}"/>
+  <a width="60px" href="https://badges.fedoraproject.org/badge/{{badge['id']}}">
+    <img width="60px" src="{{badge['image']}}"/></a>
 {%endfor%}
 </div>
 """)
