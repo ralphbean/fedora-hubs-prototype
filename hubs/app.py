@@ -50,6 +50,12 @@ class CustomJSONEncoder(flask.json.JSONEncoder):
 app.json_encoder = CustomJSONEncoder
 
 
+@app.teardown_request
+def shutdown_session(exception=None):
+    """ Remove the DB session at the end of each request. """
+    session.remove()
+
+
 @app.route('/')
 def index():
     if not flask.g.auth.logged_in:
@@ -244,6 +250,27 @@ def hub_unsubscribe(hub):
     user = hubs.models.User.by_openid(session, flask.g.auth.openid)
     try:
         hub.unsubscribe(session, user)
+    except KeyError:
+        return flask.abort(400)
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
+
+@app.route('/api/hub/<hub>/star', methods=['POST'])
+@login_required
+def hub_star(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    hub.subscribe(session, user, role='stargazer')
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
+
+@app.route('/api/hub/<hub>/unstar', methods=['POST'])
+@login_required
+def hub_unstar(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    try:
+        hub.unsubscribe(session, user, role='stargazer')
     except KeyError:
         return flask.abort(400)
     session.commit()

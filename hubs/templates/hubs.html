@@ -52,12 +52,10 @@
           {% if g.auth.logged_in %}
           <li {% if request.path.endswith('/' + g.auth.user.username + '/') %}class='active'{% endif %}>
             <a href="/{{g.auth.user.username}}">me</a></li>
-          {% for assoc in g.auth.user.associations %}
-          <li {% if request.path.endswith('/' + assoc.hub.name + '/') %}class='active'{% endif %}>
-          <a href="/{{assoc.hub.name}}">{{assoc.hub.name}}</a></li>
+          {% for hub in g.auth.user.bookmarks %}
+          <li {% if request.path.endswith('/' + hub.name + '/') %}class='active'{% endif %}>
+          <a href="/{{hub.name}}">{{hub.name}}</a></li>
           {% endfor %}
-          <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>
           {% endif %}
         </ul>
       </div><!-- /.navbar-collapse -->
