@@ -127,7 +127,7 @@ class CacheInvalidatorExtraordinaire(fedmsg.consumers.FedmsgConsumer):
             if check(msg, session, widget):
                 log.info("! Invalidating cache for %r" % widget)
                 # Invalidate the cache...
-                invalidate_cache(widget.module, **widget.config)
+                invalidate_cache(widget, **widget.config)
                 # Rebuild it.
                 widget.module.data(session, widget, **widget.config)
                 # TODO -- fire off an EventSource notice that we updated stuff
