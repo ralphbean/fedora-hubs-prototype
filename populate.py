@@ -11,7 +11,7 @@ fedmsg_config = fedmsg.config.load_config()
 session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'], True, True)
 
 users = ['mrichard', 'duffy', 'ryanlerch', 'gnokii', 'nask0',
-         'abompard', 'decause', 'ralph']
+         'abompard', 'decause', 'ralph', 'lmacken']
 for username in users:
     fullname = 'Full Name Goes Here'
     openid = '%s.id.fedoraproject.org' % username
@@ -96,6 +96,7 @@ hub.widgets.append(widget)
 
 hub.subscribe(session, hubs.models.User.by_openid(session, 'ralph.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'abompard.id.fedoraproject.org'), 'owner')
+hub.subscribe(session, hubs.models.User.by_openid(session, 'lmacken.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'nask0.id.fedoraproject.org'), 'member')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'decause.id.fedoraproject.org'), 'subscriber')
 
