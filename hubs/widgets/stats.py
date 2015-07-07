@@ -8,17 +8,28 @@ template = jinja2.Template("""
 <div class="stats-container">
   <table class="stats-table">
     <tr><th>Members</th><th>Subscribers</th></tr>
-    <tr class="text-info"><td>{{members}}</td><td>{{subscribers}}</td></tr>
+    <tr class="text-info"><td>{{members | length}}</td><td>{{subscribers | length}}</td></tr>
   </table>
-  <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
+  {% if g.auth.logged_in %}
+    {% if g.auth.nickname in members %}
+    <div class="pull-right"><button class="btn btn-danger">Resign</button></div>
+    {% elif g.auth.nickname in subscribers %}
+    <div class="pull-right"><button class="btn btn-warning">Unsubscribe</button></div>
+    {% else %}
+    <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
+    {% endif %}
+  {% else %}
+    <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
+  {% endif %}
 </div>
 """)
 
 
 def data(session, widget):
     return dict(
-        members=len(widget.hub.members),
-        subscribers=len(widget.hub.subscribers),
+        owners=[u.username for u in widget.hub.owners],
+        members=[u.username for u in widget.hub.members],
+        subscribers=[u.username for u in widget.hub.subscribers],
     )
 
 

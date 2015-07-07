@@ -42,7 +42,7 @@ template = jinja2.Template("""
           help="Link to the community rules and guidelines")
 def data(session, widget, link):
     owners = widget.hub.owners
-    owners = ordereddict([(o, avatar(o)) for o in owners])
+    owners = ordereddict([(o.username, avatar(o.username)) for o in owners])
     return dict(owners=owners, link=link)
 
 

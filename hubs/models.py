@@ -116,18 +116,26 @@ class Hub(BASE):
 
     #fas_group = sa.Column(sa.String(32), nullable=False)
 
-    # This is just some silly dev data.  eventually, connect this
-    # to real database data.
-    owners = ['tatica', 'gnokii', 'duffy', 'ryanlerch']
-    members = ['ralph', 'sadin', 'sayan'] + owners
-    subscribers = []
+    @property
+    def owners(self):
+        return [assoc.user for assoc in self.associations
+                if assoc.role == 'owner']
+    @property
+    def members(self):
+        return [assoc.user for assoc in self.associations
+                if assoc.role == 'member' or assoc.role =='owner']
 
+    @property
+    def subscribers(self):
+        return [assoc.user for assoc in self.associations
+                if assoc.role == 'subscriber']
 
-    def subscribe(self, session, user):
+    def subscribe(self, session, user, role='subscriber'):
+        """ Subscribe a user to this hub. """
         # TODO -- add logic here to manage not adding the user multiple
         # times, doing different roles, etc.. publish a fedmsg message,
         # etc...
-        session.add(Association(user=user, hub=self, role='subscriber'))
+        session.add(Association(user=user, hub=self, role=role))
         session.commit()
 
     @classmethod
@@ -231,15 +239,12 @@ class User(BASE):
     fullname = sa.Column(sa.Text)
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
 
-    @property
-    def avatar(self):
-        return username2avatar(self.username)
 
     def __json__(self, session):
         return {
             'username': self.username,
             'openid': self.openid,
-            'avatar': self.avatar,
+            'avatar': username2avatar(self.username),
             'fullname': self.fullname,
             'created_on': self.created_on,
             # We'll need hubs subscribed to, owned, etc..
@@ -271,10 +276,6 @@ class User(BASE):
             session.add(self)
             if not Hub.by_name(session, self.username):
                 Hub.create_user_hub(session, self.username, self.fullname)
-
-            # Subscribe self to some default hubs for now..
-            hub = Hub.by_name(session, 'designteam')
-            hub.subscribe(session, self)
 
             session.commit()
         return self
