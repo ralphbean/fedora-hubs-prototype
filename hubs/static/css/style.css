@@ -12,7 +12,18 @@
       font-family: 'Open Sans', 'sans-serif';
       font-size: 12pt;
     }
-    
+
+    .super-header img.avatar {
+      margin-right: 10px;
+      width: 22.5px;
+    }
+
+    .super-header .glyphicon-chevron-down {
+      color: #58595b;
+      margin: 5px 0 0 10px;
+      font-size: 18px;
+    }
+
     #logo { text-align: left; }
 
     .bookmarks .navbar.navbar-default {
@@ -23,7 +34,7 @@
       margin-bottom: 0;
       text-align: center;
     }
-    
+
     .bookmarks .navbar-nav > li > a {
       padding-bottom: 4.5px;
       padding-top: 4.5px;
@@ -37,7 +48,7 @@
       background-color: transparent;
       border-bottom: 3px solid #3c6eb4;
     }
-    
+
     .header {
       color: #ffffff;
       background-color: #3c6eb4;
@@ -110,7 +121,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-} 
+}
 
 .stats-table {
 width: 180px
