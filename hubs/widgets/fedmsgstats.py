@@ -1,6 +1,8 @@
 from hubs.hinting import hint
 from hubs.widgets.chrome import panel
 
+from hubs.utils import commas
+
 import jinja2
 import requests
 
@@ -14,7 +16,7 @@ template = jinja2.Template("""
 <div class="stats-container">
   <table class="stats-table">
     <tr><th>FedMsgs</th><th>Subscribers</th></tr>
-    <tr class="text-info"><td>{{fedmsgs}}</td><td class="text-right">{{subscribers}}</td></tr>
+    <tr class="text-info"><td>{{fedmsgs_text}}</td><td class="text-right">{{subscribers_text}}</td></tr>
   </table>
   {% if session['nickname'] != username %}
   <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
@@ -32,6 +34,8 @@ def data(session, widget, username):
         username=username,
         fedmsgs=fedmsgs,
         subscribers=len(widget.hub.subscribers),
+        fedmsgs_text=commas(fedmsgs),
+        subscribers_text=commas(len(widget.hub.subscribers)),
     )
 
 

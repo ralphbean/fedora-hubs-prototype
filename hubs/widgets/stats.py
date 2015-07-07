@@ -1,6 +1,8 @@
 from hubs.hinting import hint, prefixed as _
 from hubs.widgets.chrome import panel
 
+from hubs.utils import commas
+
 import flask
 import jinja2
 
@@ -10,7 +12,7 @@ template = jinja2.Template("""
 <div class="col-md-7">
   <table class="stats-table">
     <tr><th>Members</th><th>Subscribers</th></tr>
-    <tr class="text-info"><td>{{members | length}}</td><td class="text-right">{{subscribers | length}}</td></tr>
+    <tr class="text-info"><td>{{members_text}}</td><td class="text-right">{{subscribers_text}}</td></tr>
   </table>
 </div>
 <div class="col-md-5">
@@ -51,11 +53,21 @@ template = jinja2.Template("""
 
 
 def data(session, widget):
+    owners = [u.username for u in widget.hub.owners]
+    members = [u.username for u in widget.hub.members]
+    subscribers = [u.username for u in widget.hub.subscribers]
+    stargazers = [u.username for u in widget.hub.stargazers]
+
     return dict(
-        owners=[u.username for u in widget.hub.owners],
-        members=[u.username for u in widget.hub.members],
-        subscribers=[u.username for u in widget.hub.subscribers],
-        stargazers=[u.username for u in widget.hub.stargazers],
+        owners=owners,
+        members=members,
+        subscribers=subscribers,
+        stargazers=stargazers,
+
+        owners_text=commas(len(owners)),
+        members_text=commas(len(members)),
+        subscribers_text=commas(len(subscribers)),
+        stargazers_text=commas(len(stargazers)),
 
         hub_leave_url=flask.url_for('hub_leave', hub=widget.hub.name),
         hub_join_url=flask.url_for('hub_join', hub=widget.hub.name),

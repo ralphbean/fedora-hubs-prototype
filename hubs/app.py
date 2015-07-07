@@ -50,6 +50,11 @@ class CustomJSONEncoder(flask.json.JSONEncoder):
 app.json_encoder = CustomJSONEncoder
 
 
+@app.template_filter('commas')
+def commas(numeric):
+    return "{:,.2f}".format(numeric)
+
+
 @app.teardown_request
 def shutdown_session(exception=None):
     """ Remove the DB session at the end of each request. """
