@@ -36,13 +36,16 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
+          {% if g.auth.logged_in %}
+          <li {% if request.path.endswith('/' + g.auth.user.username + '/') %}class='active'{% endif %}>
+            <a href="/{{g.auth.user.username}}">me</a></li>
+          {% for assoc in g.auth.user.associations %}
+          <li {% if request.path.endswith('/' + assoc.hub.name + '/') %}class='active'{% endif %}>
+          <a href="/{{assoc.hub.name}}">{{assoc.hub.name}}</a></li>
+          {% endfor %}
           <li class="divider"></li>
-          <li><a href="#">Separated link</a></li>          
+          <li><a href="#">Separated link</a></li>
+          {% endif %}
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

@@ -182,16 +182,12 @@ def login_required(function):
 @app.before_request
 def check_auth():
     flask.g.fedmsg_config = fedmsg_config
-    flask.g.auth = munch.Munch(
-        logged_in=False,
-        method=None,
-        id=None,
-    )
+    flask.g.auth = munch.Munch(logged_in=False)
     if 'openid' in flask.session:
         openid = flask.session.get('openid').strip('/').split('/')[-1]
         flask.g.auth.logged_in = True
-        flask.g.auth.method = u'openid'
         flask.g.auth.openid = openid
+        flask.g.auth.user = hubs.models.User.by_openid(session, openid)
         flask.g.auth.openid_url = flask.session.get('openid')
         flask.g.auth.fullname = flask.session.get('fullname', None)
         flask.g.auth.nickname = flask.session.get('nickname', None)
