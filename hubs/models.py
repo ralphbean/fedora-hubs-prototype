@@ -24,7 +24,6 @@
 import datetime
 import json
 import logging
-import random
 
 import sqlalchemy as sa
 from sqlalchemy import create_engine
@@ -101,6 +100,14 @@ class Association(BASE):
     user = relation("User", backref="associations")
     hub = relation("Hub", backref="associations")
 
+    @classmethod
+    def get(cls, session, hub, user, role):
+        return session.query(cls)\
+            .filter_by(hub=hub)\
+            .filter_by(user=user)\
+            .filter_by(role=role)\
+            .first()
+
 
 class Hub(BASE):
     __tablename__ = 'hubs'
@@ -136,6 +143,18 @@ class Hub(BASE):
         # etc...
         session.add(Association(user=user, hub=self, role=role))
         session.commit()
+
+    def unsubscribe(self, session, user, role='subscriber'):
+        """ Subscribe a user to this hub. """
+        # TODO -- add logic here to manage not adding the user multiple
+        # times, doing different roles, etc.. publish a fedmsg message,
+        # etc...
+        association = Association.get(session, hub=self, user=user, role=role)
+        if not association:
+            raise KeyError("%r is not a %r of %r" % (user, role, self))
+        session.delete(association)
+        session.commit()
+
 
     @classmethod
     def by_name(cls, session, name):

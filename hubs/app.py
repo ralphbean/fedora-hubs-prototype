@@ -5,6 +5,7 @@ import os
 import flask
 import flask.json
 import munch
+import six
 
 from flask.ext.openid import OpenID
 
@@ -184,7 +185,10 @@ def check_auth():
     flask.g.fedmsg_config = fedmsg_config
     flask.g.auth = munch.Munch(logged_in=False)
     if 'openid' in flask.session:
-        openid = flask.session.get('openid').strip('/').split('/')[-1]
+        openid = flask.session.get('openid')
+        if isinstance(openid, six.binary_type):
+            openid = openid.decode('utf-8')
+        openid = openid.strip('/').split('/')[-1]
         flask.g.auth.logged_in = True
         flask.g.auth.openid = openid
         flask.g.auth.user = hubs.models.User.by_openid(session, openid)
@@ -222,7 +226,49 @@ def get_widget(session, hub, idx):
     flask.abort(404)
 
 
+## Here are a bunch of API methods that should probably be broken out into
+## their own file
+@app.route('/api/hub/<hub>/subscribe', methods=['POST'])
+@login_required
+def hub_subscribe(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    hub.subscribe(session, user)
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
 
+@app.route('/api/hub/<hub>/unsubscribe', methods=['POST'])
+@login_required
+def hub_unsubscribe(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    try:
+        hub.unsubscribe(session, user)
+    except KeyError:
+        return flask.abort(400)
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
+
+@app.route('/api/hub/<hub>/join', methods=['POST'])
+@login_required
+def hub_join(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    hub.subscribe(session, user, role='member')
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
+
+@app.route('/api/hub/<hub>/leave', methods=['POST'])
+@login_required
+def hub_leave(hub):
+    hub = get_hub(session, hub)
+    user = hubs.models.User.by_openid(session, flask.g.auth.openid)
+    try:
+        hub.unsubscribe(session, user, role='member')
+    except KeyError:
+        return flask.abort(400)
+    session.commit()
+    return flask.redirect(flask.url_for('hub', name=hub.name))
 
 
 if __name__ == '__main__':

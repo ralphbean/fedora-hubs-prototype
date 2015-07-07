@@ -11,7 +11,7 @@ fedmsg_config = fedmsg.config.load_config()
 session = hubs.models.init(fedmsg_config['hubs.sqlalchemy.uri'], True, True)
 
 users = ['mrichard', 'duffy', 'ryanlerch', 'gnokii', 'nask0',
-         'abompard', 'decause', 'ralph']
+         'abompard', 'decause', 'ralph', 'lmacken']
 for username in users:
     fullname = 'Full Name Goes Here'
     openid = '%s.id.fedoraproject.org' % username
@@ -46,7 +46,7 @@ hub.widgets.append(widget)
 
 widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
                             _config=json.dumps({
-                                'text': 'This is a sticky note.',
+                                'text': "The Design Team is the design group of the Fedora project. Our interests are not only in creating graphics for use by the Fedora community, but also in advocating the use of the creative tools that are a part of Fedora.",
                             }))
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
@@ -87,7 +87,7 @@ hub.widgets.append(widget)
 
 widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
                             _config=json.dumps({
-                                'text': 'This is a sticky note.',
+                                'text': "The Infrastructure Team consists of dedicated volunteers and professionals managing the servers, building the tools and utilities, and creating new applications to make Fedora development a smoother process. We're located all over the globe and communicate primarily by IRC and e-mail. ",
                             }))
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
@@ -96,6 +96,7 @@ hub.widgets.append(widget)
 
 hub.subscribe(session, hubs.models.User.by_openid(session, 'ralph.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'abompard.id.fedoraproject.org'), 'owner')
+hub.subscribe(session, hubs.models.User.by_openid(session, 'lmacken.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'nask0.id.fedoraproject.org'), 'member')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'decause.id.fedoraproject.org'), 'subscriber')
 

@@ -10,3 +10,4 @@ fmn.lib
 fmn.rules
 datanommer.models
 psycopg2
+gunicorn
