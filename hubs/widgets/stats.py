@@ -16,7 +16,7 @@ template = jinja2.Template("""
     <div class="pull-right">
     {% if g.auth.nickname in members %}
     <form action="{{hub_leave_url}}" method="POST">
-        <button class="btn btn-danger">Leave Hub</button>
+        <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Leave Hub</button>
     </form>
     {% elif g.auth.nickname in subscribers %}
     <form action="{{hub_unsubscribe_url}}" method="POST">
@@ -31,7 +31,7 @@ template = jinja2.Template("""
   {% else %}
     <div class="pull-right">
         <form action="{{hub_subscribe_url}}" method="POST">
-            <button class="btn btn-info">Subscribe</button>
+            <button class="btn btn-info"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
         </form>
     </div>
   {% endif %}
