@@ -83,7 +83,7 @@ def init(db_url, debug=False, create=False):
     return scoped_session(sessionmaker(bind=engine))
 
 
-roles = ['subscriber', 'member', 'owner']
+roles = ['subscriber', 'member', 'owner', 'stargazer']
 
 
 class Association(BASE):
@@ -95,7 +95,7 @@ class Association(BASE):
     user_id = sa.Column(sa.Text,
                         sa.ForeignKey('users.openid'),
                         primary_key=True)
-    role = sa.Column(sa.Enum(*roles), nullable=False)
+    role = sa.Column(sa.Enum(*roles), primary_key=True)
 
     user = relation("User", backref="associations")
     hub = relation("Hub", backref="associations")
@@ -126,6 +126,7 @@ class Hub(BASE):
     def owners(self):
         return [assoc.user for assoc in self.associations
                 if assoc.role == 'owner']
+
     @property
     def members(self):
         return [assoc.user for assoc in self.associations
@@ -135,6 +136,11 @@ class Hub(BASE):
     def subscribers(self):
         return [assoc.user for assoc in self.associations
                 if assoc.role == 'subscriber']
+
+    @property
+    def stargazers(self):
+        return [assoc.user for assoc in self.associations
+                if assoc.role == 'stargazer']
 
     def subscribe(self, session, user, role='subscriber'):
         """ Subscribe a user to this hub. """
@@ -282,6 +288,19 @@ class User(BASE):
     def subscriptions(self):
         return [assoc.hub for assoc in self.associations
                 if assoc.role == 'subscriber']
+
+    @property
+    def starred_hubs(self):
+        return [assoc.hub for assoc in self.associations
+                if assoc.role == 'stargazer']
+
+    @property
+    def bookmarks(self):
+        # TODO -- someday make this editable/configurable.
+        return sorted(list(set([assoc.hub for assoc in self.associations
+                if assoc.role == 'member'
+                or assoc.role == 'subscriber'
+                or assoc.role == 'owner'])))
 
     @property
     def username(self):

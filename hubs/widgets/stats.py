@@ -6,35 +6,46 @@ import jinja2
 
 chrome = panel()
 template = jinja2.Template("""
-<div class="stats-container">
+<div class="stats-container row">
+<div class="col-md-7">
   <table class="stats-table">
     <tr><th>Members</th><th>Subscribers</th></tr>
     <tr class="text-info"><td>{{members | length}}</td><td class="text-right">{{subscribers | length}}</td></tr>
   </table>
-
-  {% if g.auth.logged_in %}
-    <div class="pull-right">
-    {% if g.auth.nickname in members %}
-    <form action="{{hub_leave_url}}" method="POST">
-        <button class="btn btn-danger"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Leave Hub</button>
-    </form>
-    {% elif g.auth.nickname in subscribers %}
-    <form action="{{hub_unsubscribe_url}}" method="POST">
-        <button class="btn btn-warning"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Unsubscribe</button>
-    </form>
-    {% else %}
-    <form action="{{hub_subscribe_url}}" method="POST">
-        <button class="btn btn-info"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
-    </form>
-    {% endif %}
-    </div>
+</div>
+<div class="col-md-5">
+  <ul class="list-unstyled">
+  {% if g.auth.nickname in subscribers %}
+  <li><form action="{{hub_unsubscribe_url}}" method="POST">
+      <button class="btn btn-info"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Unsubscribe</button>
+  </form></li>
   {% else %}
-    <div class="pull-right">
-        <form action="{{hub_subscribe_url}}" method="POST">
-            <button class="btn btn-info"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
-        </form>
-    </div>
+  <li><form action="{{hub_subscribe_url}}" method="POST">
+      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
+  </form></li>
   {% endif %}
+
+  {% if g.auth.nickname in stargazers %}
+  <li><form action="{{hub_unstar_url}}" method="POST">
+      <button class="btn btn-info"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Unstar Hub</button>
+  </form></li>
+  {% else %}
+  <li><form action="{{hub_star_url}}" method="POST">
+      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Star Hub</button>
+  </form></li>
+  {% endif %}
+
+  {% if g.auth.nickname in members %}
+  <li><form action="{{hub_leave_url}}" method="POST">
+      <button class="btn btn-info"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Leave Hub</button>
+  </form></li>
+  {% else %}
+  <li><form action="{{hub_join_url}}" method="POST">
+      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Join Hub</button>
+  </form></li>
+  {% endif %}
+  </ul>
+</div>
 </div>
 """)
 
@@ -44,8 +55,12 @@ def data(session, widget):
         owners=[u.username for u in widget.hub.owners],
         members=[u.username for u in widget.hub.members],
         subscribers=[u.username for u in widget.hub.subscribers],
+        stargazers=[u.username for u in widget.hub.stargazers],
+
         hub_leave_url=flask.url_for('hub_leave', hub=widget.hub.name),
         hub_join_url=flask.url_for('hub_join', hub=widget.hub.name),
+        hub_unstar_url=flask.url_for('hub_unstar', hub=widget.hub.name),
+        hub_star_url=flask.url_for('hub_star', hub=widget.hub.name),
         hub_subscribe_url=flask.url_for('hub_subscribe', hub=widget.hub.name),
         hub_unsubscribe_url=flask.url_for('hub_unsubscribe', hub=widget.hub.name),
     )
