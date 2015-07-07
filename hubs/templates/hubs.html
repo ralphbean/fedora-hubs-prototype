@@ -12,11 +12,22 @@
 <div class="super-header">
   <div class="row">
 	<div class="col-md-4 col-xs-4" id="logo"><img src="{{ url_for('static', filename='img/logo-hubs.png') }}" alt="Fedora Hubs"></div>
-    <div class="col-md-8 col-xs-8">
+    <div class="col-md-2 col-md-offset-6 col-xs-8">
       {% if g.auth.logged_in %}
-	      <img src="{{hub.avatar}}" class="avatar" alt="User Icon"/>
-        {# Logged in as #} {{ g.auth.nickname }}
-        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+        <div class="dropdown">
+        <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <img src="{{hub.avatar}}" class="avatar" alt="User Icon"/>
+          {# Logged in as #} {{ g.auth.nickname }}
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+        </span>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li class="dropdown-header">Account Information</li>
+          <li><a href="#">Full Name: {{hub.summary}}</a></li>
+          <li><a href="#">Email: blah</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
       {% else %}
         Not logged in.  Click to <a href="{{url_for('login_fedora')}}">login</a>.
       {% endif %}
