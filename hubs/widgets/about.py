@@ -10,7 +10,7 @@ import hubs.validators as validators
 template = jinja2.Template("""
     <p>{{text}}</p>
     """)
-chrome = panel("About")
+chrome = panel("<span class='glyphicon glyphicon-info-sign' aria-hidden='true'></span> About")
 
 
 @argument(name="text", default="I am a Fedora user, and this is my about",
