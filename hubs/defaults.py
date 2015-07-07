@@ -48,7 +48,13 @@ def add_user_widgets(session, hub, username, fullname):
         }))
     hub.widgets.append(widget)
     widget = hubs.models.Widget(
-        plugin='badges', index=4,
+        plugin='subscriptions', index=4,
+        _config=json.dumps({
+            'username': username,
+        }))
+    hub.widgets.append(widget)
+    widget = hubs.models.Widget(
+        plugin='badges', index=5,
         _config=json.dumps({
             'username': username,
         }))

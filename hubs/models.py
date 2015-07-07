@@ -60,8 +60,7 @@ BASE = declarative_base(cls=HubsBase)
 log = logging.getLogger(__name__)
 
 
-placekitten = lambda: "https://placekitten.com/g/%i/%i" % (
-    random.randint(150,350), random.randint(150, 350))
+placekitten = lambda: "https://placekitten.com/g/320/320"
 
 
 def init(db_url, debug=False, create=False):
@@ -252,8 +251,26 @@ class User(BASE):
         }
 
     @property
+    def ownerships(self):
+        return [assoc.hub for assoc in self.associations
+                if assoc.role == 'owner']
+    @property
+    def memberships(self):
+        return [assoc.hub for assoc in self.associations
+                if assoc.role == 'member' or assoc.role =='owner']
+
+    @property
+    def subscriptions(self):
+        return [assoc.hub for assoc in self.associations
+                if assoc.role == 'subscriber']
+
+    @property
     def username(self):
         return self.openid.split('.')[0]
+
+    @classmethod
+    def by_username(cls, session, username):
+        return cls.by_openid(session, "%s.id.fedoraproject.org" % username)
 
     @classmethod
     def by_openid(cls, session, openid):

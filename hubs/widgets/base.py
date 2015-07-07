@@ -42,9 +42,11 @@ def argument(name, default, validator, help):
 def AGPLv3(name):
     def decorator(func):
         @wraps(func)
-        def inner(*args, **kwargs):
-            result = func(*args, **kwargs)
+        def inner(session, widget, *args, **kwargs):
+            result = func(session, widget, *args, **kwargs)
             result['source_url'] = flask.url_for('widget_source', name=name)
+            result['widget_url'] = flask.url_for(
+                'widget_render', hub=widget.hub.name, idx=widget.idx)
             return result
 
         return inner

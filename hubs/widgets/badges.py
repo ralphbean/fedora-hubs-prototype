@@ -1,3 +1,5 @@
+import operator
+
 import requests
 
 from hubs.hinting import hint, prefixed as _
@@ -11,8 +13,9 @@ import hubs.validators as validators
 
 template = jinja2.Template("""
 <div class="flex-container">
-{% for badge in assertions %}
-    <img width="19%" src="{{badge['image']}}"/>
+{% for badge in assertions[:10] %}
+  <a width="60px" href="https://badges.fedoraproject.org/badge/{{badge['id']}}">
+    <img width="60px" src="{{badge['image']}}"/></a>
 {%endfor%}
 </div>
 """)
@@ -29,7 +32,9 @@ def data(session, widget, username):
     url = "https://badges.fedoraproject.org/user/{username}/json"
     url = url.format(username=username)
     response = requests.get(url)
-    return response.json()
+    assertions = response.json()['assertions']
+    key = operator.itemgetter('issued')
+    return dict(assertions=sorted(assertions, key=key, reverse=True))
 
 
 @hint(topics=[_('hubs.widget.update'), _('fedbadges.badge.award')])
