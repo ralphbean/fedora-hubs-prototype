@@ -80,6 +80,7 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
 var widgets = [{% for widget in hub.widgets %}'{{ widget.idx }}',{% endfor %}];
 $.each(widgets, function(i, widget) {
