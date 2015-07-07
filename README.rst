@@ -51,12 +51,12 @@ And then navigate to http://localhost:5000/
 If you want to test it with 8 worker threads, try ``gunicorn``::
 
     $ pip install gunicorn
-    $ gunicorn -w 8 hubs.app:app -t 60 --reload
+    $ gunicorn -w 8 -t 60 --log-config logging.ini --reload hubs.app:app
 
 When hacking on widgets, it is useful to have this one-liner handy.  It removes
 the db alltogether, re-populates it, and restarts the app::
 
-    $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 hubs.app:app
+    $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 -t 60 --log-config logging.ini hubs.app:app
 
 Feed Widget - the Extra Mile
 ----------------------------
