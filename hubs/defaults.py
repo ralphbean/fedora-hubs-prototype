@@ -14,13 +14,13 @@ def add_user_widgets(session, hub, username, fullname):
 
     ## The feed widget works, but it needs to be cleaned up lots before we
     ## throw it in by default.
-    #widget = hubs.models.Widget(
-    #    plugin='feed', index=1, left=True,
-    #    _config=json.dumps({
-    #        'username': username,
-    #        'fmn_context': 'irc',  # TODO -- make this 'hubs'
-    #    }))
-    #hub.widgets.append(widget)
+    widget = hubs.models.Widget(
+        plugin='feed', index=1, left=True,
+        _config=json.dumps({
+            'username': username,
+            'fmn_context': 'irc',  # TODO -- make this 'hubs'
+        }))
+    hub.widgets.append(widget)
 
     # Right Side Widgets
     widget = hubs.models.Widget(
