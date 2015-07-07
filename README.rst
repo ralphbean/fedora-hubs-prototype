@@ -56,7 +56,7 @@ If you want to test it with 8 worker threads, try ``gunicorn``::
 When hacking on widgets, it is useful to have this one-liner handy.  It removes
 the db alltogether, re-populates it, and restarts the app::
 
-    $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 -t 60 --log-config logging.ini hubs.app:app
+    $ rm /var/tmp/hubs.db; PYTHONPATH=. python populate.py; gunicorn -w 8 -t 240 --log-config logging.ini hubs.app:app
 
 Feed Widget - the Extra Mile
 ----------------------------
