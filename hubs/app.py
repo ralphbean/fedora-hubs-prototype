@@ -13,6 +13,7 @@ import hubs.models
 
 import datanommer.models
 
+from hubs.utils import username2avatar
 
 app = flask.Flask(__name__)
 
@@ -207,6 +208,7 @@ def check_auth():
         flask.g.auth.fullname = flask.session.get('fullname', None)
         flask.g.auth.nickname = flask.session.get('nickname', None)
         flask.g.auth.email = flask.session.get('email', None)
+        flask.g.auth.avatar = username2avatar(flask.g.auth.nickname)
 
 
 def get_hub(session, name):

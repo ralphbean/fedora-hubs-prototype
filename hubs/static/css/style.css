@@ -23,6 +23,11 @@
       font-size: 18px;
     }
 
+    .super-header .dropdown .dropdown-header {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
     #logo { text-align: left; }
 
     .bookmarks .navbar.navbar-default {
