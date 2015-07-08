@@ -24,6 +24,7 @@
 import datetime
 import json
 import logging
+import operator
 
 import sqlalchemy as sa
 from sqlalchemy import create_engine
@@ -300,7 +301,7 @@ class User(BASE):
         return sorted(list(set([assoc.hub for assoc in self.associations
                 if assoc.role == 'member'
                 or assoc.role == 'subscriber'
-                or assoc.role == 'owner'])))
+                or assoc.role == 'owner'])), key=operator.attrgetter('name'))
 
     @property
     def username(self):
