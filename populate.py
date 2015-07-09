@@ -23,7 +23,7 @@ for username in users:
 session.commit()
 
 ############## Internationalizationteam
-hub = hubs.models.Hub(name='Internationalizationteam', summary='The Fedora Internationalization Team')
+hub = hubs.models.Hub(name='i18n', summary='The Internationalization Team')
 session.add(hub)
 
 widget = hubs.models.Widget(plugin='stats', index=0)
@@ -62,7 +62,7 @@ hub.subscribe(session, hubs.models.User.by_openid(session, 'ralph.id.fedoraproje
 session.commit()
 
 ############## Marketing team
-hub = hubs.models.Hub(name='marketingteam', summary='The Fedora Marketing Team')
+hub = hubs.models.Hub(name='marketing', summary='The Fedora Marketing Team')
 session.add(hub)
 
 widget = hubs.models.Widget(plugin='stats', index=0)
@@ -138,7 +138,7 @@ hub.widgets.append(widget)
 hub.subscribe(session, hubs.models.User.by_openid(session, 'duffy.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'ryanlerch.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'gnokii.id.fedoraproject.org'), 'owner')
-hub.subscribe(session, hubs.models.User.by_openid(session, 'mrichard.id.fedoraproject.org'), 'member')
+hub.subscribe(session, hubs.models.User.by_openid(session, 'mrichard.id.fedoraproject.org'), 'owner')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'nask0.id.fedoraproject.org'), 'member')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'decause.id.fedoraproject.org'), 'member')
 hub.subscribe(session, hubs.models.User.by_openid(session, 'ralph.id.fedoraproject.org'), 'subscriber')
@@ -147,7 +147,7 @@ session.commit()
 
 
 ############## Infra team
-hub = hubs.models.Hub(name='infrastructure', summary='The Fedora Infrastructure Team')
+hub = hubs.models.Hub(name='infrastructure', summary='The Fedora Infra Team')
 session.add(hub)
 
 widget = hubs.models.Widget(plugin='stats', index=0)
