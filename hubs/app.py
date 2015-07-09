@@ -74,8 +74,8 @@ def index():
 @app.route('/<name>/')
 def hub(name):
     hub = get_hub(session, name)
-    return flask.render_template('hubs.html', hub=hub, session=session)
-
+    return flask.render_template(
+        'hubs.html', hub=hub, session=session, edit=False)
 
 @app.route('/<name>/json')
 @app.route('/<name>/json/')
@@ -86,11 +86,28 @@ def hub_json(name):
     return response
 
 
+@app.route('/<name>/edit', methods=['GET'])
+@app.route('/<name>/edit/', methods=['GET'])
+def hub_edit_get(name):
+    hub = get_hub(session, name)
+    return flask.render_template(
+        'hubs.html', hub=hub, session=session, edit=True)
+
+
+@app.route('/<name>/edit', methods=['POST'])
+@app.route('/<name>/edit/', methods=['POST'])
+def hub_edit_post(name):
+    #hub = get_hub(session, name)
+    # TODO -- save things to the db ... and then redirect
+    raise NotImplementedError('TODO - save changes to hub config')
+    flask.redirect(flask.url_for('hub', name=name))
+
+
 @app.route('/<hub>/<idx>')
 @app.route('/<hub>/<idx>/')
 def widget_render(hub, idx):
     widget = get_widget(session, hub, idx)
-    return widget.render(session)
+    return widget.render(session, edit=False)
 
 
 @app.route('/<hub>/<idx>/json')
@@ -100,6 +117,25 @@ def widget_json(hub, idx):
     response = flask.jsonify(widget.__json__(session))
     # TODO -- modify headers with response.headers['X-fedora-hubs-wat'] = 'foo'
     return response
+
+
+@app.route('/<hub>/<idx>/edit', methods=['GET'])
+@app.route('/<hub>/<idx>/edit/', methods=['GET'])
+def widget_edit_get(hub, idx):
+    widget = get_widget(session, hub, idx)
+    raise NotImplementedError('next step is to get the widgets to render '
+                              'editable versions of themselves with their '
+                              'declared @arguments, etc...')
+    return widget.render(session, edit=True)
+
+
+@app.route('/<hub>/<idx>/edit', methods=['POST'])
+@app.route('/<hub>/<idx>/edit/', methods=['POST'])
+def widget_edit_post(hub, idx):
+    #widget = get_widget(session, hub, idx)
+    # TODO -- save things to the db ... and then redirect
+    raise NotImplementedError('TODO - save changes to widget config')
+    flask.redirect(flask.url_for('hub', name=hub))
 
 
 @app.route('/source/<name>')

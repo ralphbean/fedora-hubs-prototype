@@ -67,7 +67,7 @@
     <img src="{{hub.avatar}}" class="avatar" />
     <h3>{{hub.name}}</h3>
     <h5>{{hub.summary}}</h5>
-    {% if g.auth.logged_in and hub.is_admin(g.auth.user) %}
+    {% if g.auth.logged_in and not edit and hub.is_admin(g.auth.user) %}
     <p><a href="edit"><span class="glyphicon glyphicon-edit"></span>edit this hub</a></p>
     {% endif %}
     <div class="clearfix"></div>
@@ -81,12 +81,32 @@
       {% for widget in hub.left_widgets %}
       <div id="widget-{{ widget.idx }}" class="row"></div>
       {% endfor %}
+
+      {% if edit %}
+      <div id='add-widget-left' class='widget row'>
+        <div class="panel panel-default panel-visible">
+          <div class="panel-body">
+            <h1><a href="#"><span class="glyphicon glyphicon-plus"></span> Add a widget</a></h1>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
 
     <div class="col-md-{{ hub.right_width }}">
       {% for widget in hub.right_widgets %}
       <div id="widget-{{ widget.idx }}" class="widget row"></div>
       {% endfor %}
+
+      {% if edit %}
+      <div id='add-widget-right' class='widget row'>
+        <div class="panel panel-default panel-visible">
+          <div class="panel-body">
+            <h1><a href="#"><span class="glyphicon glyphicon-plus"></span> Add a widget</a></h1>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -97,7 +117,11 @@
 var widgets = [{% for widget in hub.widgets %}'{{ widget.idx }}',{% endfor %}];
 $.each(widgets, function(i, widget) {
     $.ajax({
+      {% if edit %}
+      url: widget + '/edit/',
+      {% else %}
       url: widget,
+      {% endif %}
       dataType: 'html',
       success: function(html) {
         $('#widget-' + widget).html(html);
