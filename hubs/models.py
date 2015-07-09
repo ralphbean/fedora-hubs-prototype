@@ -196,16 +196,14 @@ class Hub(BASE):
         return {
             'name': self.name,
             'summary': self.summary,
-
-            # TODO -- splash image
+            'avatar': self.avatar,
 
             'widgets': [widget.idx for widget in self.widgets],
             'left_width': self.left_width,
 
-            # TODO -- these three need to be fleshed out with real fas data.
-            'owners': self.owners,
-            'members': self.members,
-            'subscribers': self.subscribers,
+            'owners': [u.username for u in self.owners],
+            'members': [u.username for u in self.members],
+            'subscribers': [u.username for u in self.subscribers],
         }
 
 def _config_default(context):
