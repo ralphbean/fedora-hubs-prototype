@@ -162,6 +162,8 @@ class Hub(BASE):
         session.delete(association)
         session.commit()
 
+    def is_admin(self, user):
+        return user in self.owners
 
     @classmethod
     def by_name(cls, session, name):
@@ -174,7 +176,11 @@ class Hub(BASE):
         hub = cls(name=username, summary=fullname,
                   avatar=username2avatar(username))
         session.add(hub)
+
         hubs.defaults.add_user_widgets(session, hub, username, fullname)
+
+        user = User.by_username(session, username)
+        hub.subscribe(session, user, role='owner')
 
     @property
     def right_width(self):
@@ -296,10 +302,13 @@ class User(BASE):
     @property
     def bookmarks(self):
         # TODO -- someday make this editable/configurable.
-        return sorted(list(set([assoc.hub for assoc in self.associations
-                if assoc.role == 'member'
-                or assoc.role == 'subscriber'
-                or assoc.role == 'owner'])), key=operator.attrgetter('name'))
+        return sorted(list(set([
+            assoc.hub for assoc in self.associations
+            if assoc.role == 'member'
+            or assoc.role == 'subscriber'
+            or assoc.role == 'owner'
+            and assoc.hub.name != self.username
+        ])), key=operator.attrgetter('name'))
 
     @property
     def username(self):
