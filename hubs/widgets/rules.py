@@ -11,13 +11,17 @@ chrome = panel()
 template = jinja2.Template("""
 <div class="rules-container">
   {% if link %}
-  <p class="small-heading">community rules</p>
-  <p><a href="{{link}}">Community Rules and Guidelines</a></p>
+  <h6>community rules</h6>
+  <p><a href="{{link}}">Community Rules and Guidelines</a></h6>
   {% endif %}
-  <p class="small-heading">group owners</p>
-  {% for owner in owners %}
-    <span><img class="img-circle" src="{{owners[owner]}}"/> {{owner}}</span>
-  {% endfor %}
+  <h6>group owners</h6>
+  <div class="row">
+    {% for owner in owners %}
+        <div class="col-sm-6">
+            <img class="img-circle" src="{{owners[owner]}}"/> {{owner}}
+        </div>
+    {% endfor %}
+  </div>
 </div>
 <style>
   .rules-table {
@@ -25,11 +29,6 @@ template = jinja2.Template("""
     padding: 0px;
     margin: 0px;
     display: inline-block;
-  }
-  .small-heading {
-    text-transform: uppercase;
-    font-size: 80%;
-    color: #797a7c;
   }
   .rules-table td {
     font-size: 32pt;
