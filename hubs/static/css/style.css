@@ -31,6 +31,7 @@
     #logo { text-align: left; }
 
     .bookmarks .navbar.navbar-default {
+      font-family: 'Open Sans', sans-serif;
       background: -webkit-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
       background: -o-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
       background: -moz-linear-gradient(rgba(255,255,255,0.4),rgba(255,255,255,0.9),rgba(255,255,255,1));
@@ -51,6 +52,14 @@
       color: #3c6eb4;
       background-color: transparent;
       border-bottom: 3px solid #3c6eb4;
+    }
+
+    @media (max-width:768px) {
+      .bookmarks .nav > .active > a, .bookmarks .nav > .active > a:hover {
+        border-bottom: none;
+        color: #3C6EB4;
+        font-weight: 700;
+      }
     }
 
     .header {
@@ -118,6 +127,10 @@
 
 .widget .panel-default > .panel-heading h3 {
     font-weight: 700;
+}
+
+.widget {
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* flexbox support */
