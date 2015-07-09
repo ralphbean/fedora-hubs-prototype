@@ -67,6 +67,9 @@
     <img src="{{hub.avatar}}" class="avatar" />
     <h3>{{hub.name}}</h3>
     <h5>{{hub.summary}}</h5>
+    {% if g.auth.logged_in and hub.is_admin(g.auth.user) %}
+    <p><a href="edit"><span class="glyphicon glyphicon-edit"></span>edit this hub</a></p>
+    {% endif %}
     <div class="clearfix"></div>
   </div>
 </div>

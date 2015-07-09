@@ -80,6 +80,11 @@
     .header h3 {
         font-weight: 700;
     }
+
+    .header a, .header a:hover, .header a:focus {
+      color: #ffffff;
+    }
+
     .row {
       padding: 5px;
     }
