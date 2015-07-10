@@ -14,11 +14,11 @@ chrome = panel('Hubs', key='associations')
 template = jinja2.Template("""
 {% if associations %}
     {% if memberships %}
-        <p>Belongs to: {{memberships_text}}</p>
+        <p><strong>Belongs to: </strong>{{memberships_text}}</p>
     {% endif %}
     <hr/>
     {% if subscriptions %}
-        <p>Subscribes to: {{subscriptions_text}}</p>
+        <p><strong>Subscribes to:</strong> {{subscriptions_text}}</p>
     {% endif %}
 {% endif %}
 """)

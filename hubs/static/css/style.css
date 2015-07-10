@@ -56,6 +56,13 @@
       border-bottom: 3px solid #3c6eb4;
     }
 
+    .navbar-default .navbar-toggle {
+      border: none;
+    }
+
+    .navbar-default .navbar-toggle:focus {
+      background-color: none;
+    }
     @media (max-width:768px) {
       .bookmarks .nav > .active > a, .bookmarks .nav > .active > a:hover {
         border-bottom: none;
@@ -165,6 +172,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.stats-container button {
+  margin: 20px 0 0 0;
 }
 
 .stats-table {

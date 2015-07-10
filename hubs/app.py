@@ -107,7 +107,8 @@ def hub_edit_post(name):
 @app.route('/<hub>/<idx>/')
 def widget_render(hub, idx):
     widget = get_widget(session, hub, idx)
-    return widget.render(session, edit=False)
+    return widget.render(session)#, edit=False)
+    #was blocking all widgets from working, sorry!
 
 
 @app.route('/<hub>/<idx>/json')
