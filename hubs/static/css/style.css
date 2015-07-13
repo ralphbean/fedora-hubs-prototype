@@ -167,6 +167,11 @@
 .rules-container img {
   margin-bottom: 15px;
 }
+
+#add-widget-left h4 a, #add-widget-right h4 a {
+  color: #60605b;
+}
+
 /* flexbox support */
 .flex-container {
     display: flex;
