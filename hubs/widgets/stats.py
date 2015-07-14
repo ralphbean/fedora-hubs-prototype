@@ -23,7 +23,7 @@ template = jinja2.Template("""
   </form></li>
   {% else %}
   <li><form action="{{hub_subscribe_url}}" method="POST">
-      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Subscribe</button>
+      <button class="btn btn-default"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Subscribe</button>
   </form></li>
   {% endif %}
 
@@ -33,7 +33,7 @@ template = jinja2.Template("""
   </form></li>
   {% else %}
   <li><form action="{{hub_star_url}}" method="POST">
-      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Star Hub</button>
+      <button class="btn btn-default"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Star Hub</button>
   </form></li>
   {% endif %}
 
@@ -43,7 +43,7 @@ template = jinja2.Template("""
   </form></li>
   {% else %}
   <li><form action="{{hub_join_url}}" method="POST">
-      <button class="btn btn-default"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Join Hub</button>
+      <button class="btn btn-default"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Join Hub</button>
   </form></li>
   {% endif %}
   </ul>

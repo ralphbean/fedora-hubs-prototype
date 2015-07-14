@@ -13,14 +13,18 @@ config = fedmsg.config.load_config()
 
 chrome = panel()
 template = jinja2.Template("""
-<div class="stats-container">
+<div class="stats-container row">
+  <div class="col-sm-7 col-md-12 col-lg-7">
   <table class="stats-table">
     <tr><th>FedMsgs</th><th>Subscribers</th></tr>
     <tr class="text-info"><td>{{fedmsgs_text}}</td><td class="text-right">{{subscribers_text}}</td></tr>
   </table>
+  </div>
+  <div class="col-sm-5 col-md-12 col-lg-5">
   {% if session['nickname'] != username %}
   <div class="pull-right"><button class="btn btn-info">Subscribe</button></div>
   {% endif %}
+  </div>
 </div>
 """)
 
