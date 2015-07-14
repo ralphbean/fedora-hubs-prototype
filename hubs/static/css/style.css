@@ -30,6 +30,27 @@
       font-size: 16px;
     }
 
+    .super-header input {
+      width: 100%;
+      border-radius: 0;
+      font-family: 'Open Sans', sans-serif;
+      padding: 5px;
+      border: 1px solid #d1d3d4;
+    }
+
+    .super-header .input-group-addon {
+      background-color: #3C6EB4;
+      color: #fff;
+      border: 0;
+      border-radius: 0;
+    }
+
+    @media (max-width: 768px) {
+      .super-header .input-group {
+        margin-top: 20px;
+      }
+    }
+
     #logo { text-align: left; }
 
     .bookmarks .navbar.navbar-default {

@@ -11,8 +11,8 @@
 <body>
 <div class="super-header">
   <div class="row">
-	<div class="col-md-4 col-xs-4" id="logo"><img src="{{ url_for('static', filename='img/logo-hubs.png') }}" alt="Fedora Hubs"></div>
-    <div class="col-md-2 col-md-offset-6 col-xs-8">
+	  <div class="col-xs-4" id="logo"><img src="{{ url_for('static', filename='img/logo-hubs.png') }}" alt="Fedora Hubs"></div>
+    <div class="col-sm-4 col-sm-push-4 col-xs-8">
       {% if g.auth.logged_in %}
         <div class="dropdown pull-right">
         <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -31,6 +31,15 @@
       {% else %}
         Not logged in.  Click to <a href="{{url_for('login_fedora')}}">login</a>.
       {% endif %}
+    </div>
+    <div class="col-sm-4 col-sm-pull-4 col-xs-12">
+      <!-- NOT HOOKED UP TO ANYTHING XOXO -->
+      <div class="input-group">
+        <input type="search" placeholder="Search across all hubs ..."></input>
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-search"></span>
+        </span>
+    </div>
     </div>
   </div>
 </div>
