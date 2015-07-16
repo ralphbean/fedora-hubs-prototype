@@ -113,6 +113,9 @@
       color: #ffffff;
     }
 
+    .header span.edit {
+      margin: 5px 5px 0 0;
+    }
     .row {
       padding: 5px;
     }
