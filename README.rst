@@ -139,8 +139,8 @@ that *should* show up on your feed.. they should appear there.  (At very least,
 you shouldn't get an error message about that widget being unable to be
 displayed).
 
-Internal design
-===============
+Stubbing out a new Widget
+=========================
 
 You write a new widget in the ``hubs/widgets/`` directory and must declare it
 in the registry dict in ``hubs/widgets/__init__.py``.
@@ -158,7 +158,18 @@ In order to be valid, a widget must have:
   True if the lookup value should be nuked/refreshed in memcached (or some
   other store).
 
-Furthermore, a proposal:
+If you want to try making a new widget:
+
+- Copy an existing one in ``hubs/widgets/``
+- Add it to the registry in ``hubs/widgets/__init__.py``
+- If you want it to show up on a **user** page, add it to ``hubs/defaults.py``
+  in the ``add_user_widgets`` function.
+- If you want it to show up on **group** pages, add it to ``populate.py``.
+
+Destroy your database, rebuild it, and re-run the app.  Your widget should show up.
+
+A proposal, client-side templates
+=================================
 
 - The template per-widget is currently held and rendered *server-side* with
   jinja2.  This is how all our apps do it, more or less.
