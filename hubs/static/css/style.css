@@ -90,6 +90,9 @@
         color: #3C6EB4;
         font-weight: 700;
       }
+      .header .medium-wide {
+        top: 150px !important;
+      }
     }
 
     .header {
@@ -98,6 +101,24 @@
       width: 100%;
       font-family: 'Open Sans', sans-serif;
     }
+
+    .header .img-wrap {
+      max-height: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .header .img-wrap img {
+      width: 100%;
+      text-align: center;
+    }
+
+    .header .medium-wide {
+      position: absolute;
+      top: 100px;
+      left: 45%;
+    }
+
     .header img.avatar {
         width: 70px;
         float: left;
