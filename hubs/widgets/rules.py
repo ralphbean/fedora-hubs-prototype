@@ -23,11 +23,11 @@ template = jinja2.Template("""
     {% endfor %}
   </div>
   {% if schedule_text or schedule_link or minutes_link %}
-  <div class="row">
   <h6>meetings</h6>
   {% if schedule_text %}
   <p>{{schedule_text}}</p>
   {% endif %}
+  <p>
   {% if schedule_link %}
   <a target="_blank" href="{{schedule_link}}">Meeting Schedule</a>
   {% endif %}
@@ -37,7 +37,7 @@ template = jinja2.Template("""
   {% if minutes_link %}
   <a target="_blank" href="{{minutes_link}}">Past Meeting Minutes</a>
   {% endif %}
-  </div>
+  </p>
   {% endif %}
 </div>
 <style>
