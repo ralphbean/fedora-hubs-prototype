@@ -12,7 +12,7 @@ template = jinja2.Template("""
 <ul class="media-list">
     <li class="media">
         <div class="media-left">
-            <img class="media-object square-32" src="http://placekitten.com/g/32/32"/>
+            <img class="media-object square-32" src="{{cobweb_icon}}"/>
         </div>
         <div class="media-body">
             Cobweb alert!  This hub was last active {{then}}.
@@ -28,7 +28,9 @@ def data(session, widget):
     old = days > 31
     then = datetime.datetime.utcnow() - datetime.timedelta(days=days)
     then = arrow.get(then).humanize()
-    return dict(old=old, days=days, then=then)
+    import flask
+    cobweb_icon = flask.url_for('static', filename='img/cobweb.png')
+    return dict(old=old, days=days, then=then, cobweb_icon=cobweb_icon)
 
 
 #@hint(topics=[_('hubs.widget.update')])
