@@ -155,6 +155,38 @@
       max-height: 100%;
     }
 
+    .panel-info, .panel-info .panel-heading {
+      background-color: #a07cbc;
+      font-family: 'Open Sans', sans-serif;
+      color: #fff;
+      border: 0;
+    }
+
+    .panel-info .panel-heading h3 {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .panel-info .widget-buttons a {
+      color: #fff;
+    }
+
+    .panel-danger, .panel-danger .panel-heading {
+      background-color: #bd0b0b;
+      font-family: 'Open Sans', sans-serif;
+      color: #fff;
+      border: 0;
+    }
+
+    .panel-danger .panel-heading h3 {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .panel-info .widget-buttons a {
+      color: #fff;
+    }
+
 /* generic widget styling */
 .widget .panel-default > .panel-heading {
     font-family: 'Open Sans', 'sans-serif';
