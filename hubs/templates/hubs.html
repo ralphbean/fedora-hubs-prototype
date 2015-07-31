@@ -72,11 +72,8 @@
   </nav>
 </div>
 <div class="header">
-  <div class="img-wrap">
-    <img src="https://placekitten.com/2000/500" />
-  </div>
   {% if g.auth.logged_in and not edit and hub.is_admin(g.auth.user) %}
-    <div class="dropdown pull-right">
+    <div class="dropdown pull-right edit">
       <span class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <span class="glyphicon glyphicon-edit"></span> edit this page
       </span>
@@ -93,16 +90,19 @@
       </ul>
     </div>
   {% endif %}
-  <div class="padded center-block medium-wide">
-    {% if hub.user_hub %}
-    <img src="{{hub.avatar}}" class="avatar" />
-    <h3>{{hub.name}}</h3>
-    <h5>{{hub.summary}}</h5>
-    <div class="clearfix"></div>
+  {% if hub.user_hub %}
+    <div class="padded center-block medium-wide">
+      <img src="{{hub.avatar}}" class="avatar" />
+      <h3>{{hub.name}}</h3>
+      <h5>{{hub.summary}}</h5>
+      <div class="clearfix"></div>
+    </div>
     {% else %}
-    TODO - put max-height overflow:hidden placekitten here...
-    {% endif %}
-  </div>
+    <div class="img-wrap">
+      <img src="https://placekitten.com/2000/500" />
+    </div>
+    <h3 class="team">{{hub.name}}</h3>
+  {% endif %}
 </div>
 <div class="container">
   <div class="row">

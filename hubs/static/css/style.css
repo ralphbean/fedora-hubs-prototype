@@ -90,8 +90,11 @@
         color: #3C6EB4;
         font-weight: 700;
       }
-      .header .medium-wide {
-        top: 150px !important;
+      .header .dropdown.edit {
+        top: 140px !important;
+      }
+      .header h3.team {
+        top: 170px !important;
       }
     }
 
@@ -100,6 +103,13 @@
       background-color: #3c6eb4;
       width: 100%;
       font-family: 'Open Sans', sans-serif;
+    }
+
+    .header .dropdown.edit {
+      position: absolute;
+      top: 90px;
+      right: 0;
+      z-index: 2;
     }
 
     .header .img-wrap {
@@ -113,9 +123,9 @@
       text-align: center;
     }
 
-    .header .medium-wide {
+    .header h3.team {
       position: absolute;
-      top: 100px;
+      top: 120px;
       left: 45%;
     }
 
@@ -126,6 +136,7 @@
         display: inline;
         border: 5px solid #fff;
     }
+
     .header h3 {
         font-weight: 700;
     }
