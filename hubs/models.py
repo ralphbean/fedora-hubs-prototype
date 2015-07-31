@@ -117,6 +117,8 @@ class Hub(BASE):
     created_on = sa.Column(sa.DateTime, default=datetime.datetime.utcnow)
     widgets = relation('Widget', backref=backref('hub'))
     left_width = sa.Column(sa.Integer, nullable=False, default=8)
+    archived = sa.Column(sa.Boolean, default=False)
+    user_hub = sa.Column(sa.Boolean, default=False)
 
     # A URL to the "avatar" for this hub.
     avatar = sa.Column(sa.String(256), default=placekitten)
@@ -197,7 +199,8 @@ class Hub(BASE):
     @classmethod
     def create_user_hub(cls, session, username, fullname):
         hub = cls(name=username, summary=fullname,
-                  avatar=username2avatar(username))
+                  avatar=username2avatar(username),
+                  user_hub=True)
         session.add(hub)
 
         hubs.defaults.add_user_widgets(session, hub, username, fullname)
