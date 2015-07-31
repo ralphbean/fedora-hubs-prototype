@@ -30,11 +30,15 @@ widget = hubs.models.Widget(plugin='stats', index=0)
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='rules', index=1,
                             _config=json.dumps({
-                                'link': 'https://fedoraproject.org/wiki/I18N'
+                                'link': 'https://fedoraproject.org/wiki/I18N',
+                                'schedule_text': None,
+                                'schedule_link': None,
+                                'minutes_link': 'https://meetbot.fedoraproject.org/sresults/?group_id=i18n&type=team',
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'i18n'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -71,11 +75,15 @@ widget = hubs.models.Widget(plugin='stats', index=0)
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='rules', index=1,
                             _config=json.dumps({
-                                'link': 'https://fedoraproject.org/wiki/Marketing'
+                                'link': 'https://fedoraproject.org/wiki/Marketing',
+                                'schedule_text': None,
+                                'schedule_link': None,
+                                'minutes_link': 'http://meetbot.fedoraproject.org/sresults/?group_id=fedora-mktg&type=channel',
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'marketing'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -115,11 +123,15 @@ widget = hubs.models.Widget(plugin='stats', index=0)
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='rules', index=1,
                             _config=json.dumps({
-                                'link': 'https://fedoraproject.org/wiki/Design'
+                                'link': 'https://fedoraproject.org/wiki/Design',
+                                'schedule_text': 'Meetings are every other Tuesday at 16:00 UTC',
+                                'schedule_link': 'https://apps.fedoraproject.org/calendar/design/',
+                                'minutes_link': 'http://meetbot.fedoraproject.org/sresults/?group_id=fedora-design&type=channel',
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'design'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -160,11 +172,15 @@ widget = hubs.models.Widget(plugin='stats', index=0)
 hub.widgets.append(widget)
 widget = hubs.models.Widget(plugin='rules', index=1,
                             _config=json.dumps({
-                                'link': 'https://fedoraproject.org/wiki/Infrastructure'
+                                'link': 'https://fedoraproject.org/wiki/Infrastructure',
+                                'schedule_text': 'We meet weekly in #fedora-meeting at 18:00 UTC',
+                                'schedule_link': 'https://apps.fedoraproject.org/calendar/infrastructure/',
+                                'minutes_link': 'http://meetbot.fedoraproject.org/sresults/?group_id=infrastructure&type=team',
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'infrastructure'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget

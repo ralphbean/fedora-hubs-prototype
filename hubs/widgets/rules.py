@@ -22,6 +22,23 @@ template = jinja2.Template("""
         </div>
     {% endfor %}
   </div>
+  {% if schedule_text or schedule_link or minutes_link %}
+  <h6>meetings</h6>
+  {% if schedule_text %}
+  <p>{{schedule_text}}</p>
+  {% endif %}
+  <p>
+  {% if schedule_link %}
+  <a target="_blank" href="{{schedule_link}}">Meeting Schedule</a>
+  {% endif %}
+  {% if schedule_link and minutes_link %}
+  &#8214;
+  {% endif %}
+  {% if minutes_link %}
+  <a target="_blank" href="{{minutes_link}}">Past Meeting Minutes</a>
+  {% endif %}
+  </p>
+  {% endif %}
 </div>
 <style>
   .rules-table {
@@ -39,10 +56,22 @@ template = jinja2.Template("""
 @argument(name='link', default=None,
           validator=validators.link,
           help="Link to the community rules and guidelines")
-def data(session, widget, link):
+@argument(name='schedule_text', default=None,
+          validator=validators.text,
+          help="Some text about when meetings are")
+@argument(name='schedule_link', default=None,
+          validator=validators.link,
+          help="Link to a schedule for IRC meetings, etc..")
+@argument(name='minutes_link', default=None,
+          validator=validators.link,
+          help="Link to meeting minutes from past meetings..")
+def data(session, widget, link, schedule_text, schedule_link, minutes_link):
     owners = widget.hub.owners
     owners = ordereddict([(o.username, avatar(o.username)) for o in owners])
-    return dict(owners=owners, link=link)
+    return dict(owners=owners, link=link,
+                schedule_text=schedule_text,
+                schedule_link=schedule_link,
+                minutes_link=minutes_link)
 
 
 @hint(topics=[_('hubs.widget.update'), _('hubs.hub.update')])
