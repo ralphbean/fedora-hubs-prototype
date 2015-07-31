@@ -20,12 +20,12 @@ template = jinja2.Template("""
     <li class="media">
         <div class="media-left">
             <a href="{{update['link']}}" target="_blank">
-                <img class="media-object img-responsive square-32" src="{{update['icon']}}"/>
+                <img class="media-object square-32" src="{{update['icon']}}"/>
             </a>
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{update['title']}} (karma {{update['karma']}})</h4>
-            ready for love
+            can be pushed to stable
         </div>
     </li>
 {% endfor %}
