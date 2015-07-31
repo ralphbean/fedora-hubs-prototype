@@ -39,7 +39,7 @@ def panel(title=None, klass="panel-default", key=None):
             return _panel_template.render(
                 content=content,
                 heading=heading,
-                klass=klass,
+                klass=klass(kwargs) if callable(klass) else klass,
                 **kwargs)
         return inner
     return decorator

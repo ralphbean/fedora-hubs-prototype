@@ -23,7 +23,7 @@ for username in users:
 session.commit()
 
 ############## Internationalizationteam
-hub = hubs.models.Hub(name='i18n', summary='The Internationalization Team')
+hub = hubs.models.Hub(name='i18n', summary='The Internationalization Team', archived=True)
 session.add(hub)
 
 widget = hubs.models.Widget(plugin='stats', index=0)

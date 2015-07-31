@@ -5,7 +5,8 @@ import datetime
 import jinja2
 
 from hubs.widgets.chrome import panel
-chrome = panel(None, key='old', klass='panel-info')
+klass_switcher = lambda data: 'panel-danger' if data['archived'] else 'panel-info'
+chrome = panel(None, key='old', klass=klass_switcher)
 
 template = jinja2.Template("""
 {% if old %}
