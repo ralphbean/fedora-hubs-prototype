@@ -9,6 +9,7 @@ from hubs.widgets import fedmsgs
 from hubs.widgets import fedmsgstats
 from hubs.widgets import feed
 from hubs.widgets import subscriptions
+from hubs.widgets import cobwebs
 
 from hubs.widgets.workflow import pendingacls
 from hubs.widgets.workflow import updates2stable
@@ -27,6 +28,7 @@ registry = {
     'fedmsgstats': fedmsgstats,
     'feed': feed,
     'subscriptions': subscriptions,
+    'cobwebs': cobwebs,
 
     'workflow.pendingacls': pendingacls,
     'workflow.updates2stable': updates2stable,

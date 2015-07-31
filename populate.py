@@ -44,12 +44,14 @@ widget = hubs.models.Widget(plugin='about', index=3,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
+widget = hubs.models.Widget(plugin='cobwebs', index=0, left=True)
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='sticky', index=1, left=True,
                             _config=json.dumps({
                                 'text': "<p>The Fedora I18N project works on internationalization (i18n) to support the localization (l10n) of Fedora in many languages. Translation of Fedora software and documentation are handled by the Fedora L10N project.</p> <p>The goals of the Project are to:</p> <ul><li>Develop, package, and maintain applications like input methods for different languages</li> <li>Improve applications and utilities to support and process different languages</li> <li>Quality-assure that existing applications meet i18n standards</li> <li>Support the infrastructure of the Fedora Localization Project</li></ul>",
                             }))
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
+widget = hubs.models.Widget(plugin='dummy', index=2, left=True)
 hub.widgets.append(widget)
 
 
@@ -83,12 +85,14 @@ widget = hubs.models.Widget(plugin='about', index=3,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
+widget = hubs.models.Widget(plugin='cobwebs', index=0, left=True)
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='sticky', index=1, left=True,
                             _config=json.dumps({
                                 'text': "The Fedora Marketing Team develops and executes marketing strategies to promote the usage and support of Fedora worldwide. Through the development of processes and content, this project aims to support the efforts of other Fedora projects to spread Fedora and to provide a central repository of ideas and information that can be used to deliver Fedora to new audiences. We work closely with the Fedora Ambassadors who spread the word about Fedora at events and allow the Fedora Project to interact directly with its existing and prospective users. ",
                             }))
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
+widget = hubs.models.Widget(plugin='dummy', index=2, left=True)
 hub.widgets.append(widget)
 
 
@@ -125,12 +129,14 @@ widget = hubs.models.Widget(plugin='about', index=3,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
+widget = hubs.models.Widget(plugin='cobwebs', index=0, left=True)
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='sticky', index=1, left=True,
                             _config=json.dumps({
                                 'text': "The Design Team is the design group of the Fedora project. Our interests are not only in creating graphics for use by the Fedora community, but also in advocating the use of the creative tools that are a part of Fedora.",
                             }))
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
+widget = hubs.models.Widget(plugin='dummy', index=2, left=True)
 hub.widgets.append(widget)
 
 
@@ -168,12 +174,14 @@ widget = hubs.models.Widget(plugin='about', index=3,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='sticky', index=0, left=True,
+widget = hubs.models.Widget(plugin='cobwebs', index=0, left=True)
+hub.widgets.append(widget)
+widget = hubs.models.Widget(plugin='sticky', index=2, left=True,
                             _config=json.dumps({
                                 'text': "The Infrastructure Team consists of dedicated volunteers and professionals managing the servers, building the tools and utilities, and creating new applications to make Fedora development a smoother process. We're located all over the globe and communicate primarily by IRC and e-mail. ",
                             }))
 hub.widgets.append(widget)
-widget = hubs.models.Widget(plugin='dummy', index=1, left=True)
+widget = hubs.models.Widget(plugin='dummy', index=3, left=True)
 hub.widgets.append(widget)
 
 
