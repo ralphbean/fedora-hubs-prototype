@@ -91,10 +91,14 @@
     </div>
   {% endif %}
   <div class="padded center-block medium-wide">
+    {% if hub.user_hub %}
     <img src="{{hub.avatar}}" class="avatar" />
     <h3>{{hub.name}}</h3>
     <h5>{{hub.summary}}</h5>
     <div class="clearfix"></div>
+    {% else %}
+    TODO - put max-height overflow:hidden placekitten here...
+    {% endif %}
   </div>
 </div>
 <div class="container">
