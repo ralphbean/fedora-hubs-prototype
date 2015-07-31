@@ -62,7 +62,7 @@
           <li {% if request.path.endswith('/' + g.auth.user.username + '/') %}class='active'{% endif %}>
             <a href="/{{g.auth.user.username}}">me</a></li>
           {% for hub in g.auth.user.bookmarks %}
-          <li {% if request.path.endswith('/' + hub.name + '/') %}class='active'{% endif %}>
+          <li class='idle-{{hub.activity_class}}{% if request.path.endswith('/' + hub.name + '/') %} active{% endif %}'>
           <a href="/{{hub.name}}">{{hub.name}}</a></li>
           {% endfor %}
           {% endif %}

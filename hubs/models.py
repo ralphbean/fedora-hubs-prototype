@@ -124,6 +124,29 @@ class Hub(BASE):
     #fas_group = sa.Column(sa.String(32), nullable=False)
 
     @property
+    def days_idle(self):
+        # TODO -- implement calculating time since this hub was active
+        import random
+        return random.randint(0, 356)
+
+    @property
+    def activity_class(self):
+        idle = self.days_idle
+        limits = [
+            (356 * 5,   '5years'),
+            (356 * 2,   '2years'),
+            (356,       'year'),
+            (31 * 3,    'quarter'),
+            (31,        'month'),
+            (7,         'week'),
+            (1,         'day'),
+            (0,         'none'),
+        ]
+        for limit, name in limits:
+            if idle > limit:
+                return name
+
+    @property
     def owners(self):
         return [assoc.user for assoc in self.associations
                 if assoc.role == 'owner']

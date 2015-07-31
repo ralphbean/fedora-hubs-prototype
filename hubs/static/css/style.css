@@ -227,3 +227,12 @@ font-size: 32pt;
     width: 32px;
     height: 32px;
 }
+
+.navbar-nav > li.idle-none    > a { }
+.navbar-nav > li.idle-day     > a { }
+.navbar-nav > li.idle-week    > a { }
+.navbar-nav > li.idle-month   > a { color: #888; }
+.navbar-nav > li.idle-quarter > a { color: #999; }
+.navbar-nav > li.idle-year    > a { color: #AAA; }
+.navbar-nav > li.idle-2years  > a { color: #BBB; }
+.navbar-nav > li.idle-5years  > a { color: #CCC; }
