@@ -37,7 +37,8 @@ widget = hubs.models.Widget(plugin='rules', index=1,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'i18n'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -81,7 +82,8 @@ widget = hubs.models.Widget(plugin='rules', index=1,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'marketing'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -128,7 +130,8 @@ widget = hubs.models.Widget(plugin='rules', index=1,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'design'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget
@@ -176,7 +179,8 @@ widget = hubs.models.Widget(plugin='rules', index=1,
                             }))
 hub.widgets.append(widget)
 
-widget = hubs.models.Widget(plugin='dummy', index=2)
+widget = hubs.models.Widget(plugin='meetings', index=2,
+                            _config=json.dumps({'calendar': 'infrastructure'}))
 hub.widgets.append(widget)
 
 # Added a hubs about widget

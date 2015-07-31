@@ -260,6 +260,10 @@ font-size: 32pt;
     height: 32px;
 }
 
+.inline {
+    display: inline-block;
+}
+
 .navbar-nav > li.idle-none    > a { }
 .navbar-nav > li.idle-day     > a { }
 .navbar-nav > li.idle-week    > a { }

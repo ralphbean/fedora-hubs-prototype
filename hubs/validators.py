@@ -3,6 +3,9 @@ import kitchen.text.converters
 import hubs.models
 
 
+def required(session, value):
+    return bool(value)
+
 def text(session, value):
     return kitchen.text.converters.to_unicode(value)
 

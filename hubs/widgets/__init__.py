@@ -10,6 +10,7 @@ from hubs.widgets import fedmsgstats
 from hubs.widgets import feed
 from hubs.widgets import subscriptions
 from hubs.widgets import cobwebs
+from hubs.widgets import meetings
 
 from hubs.widgets.workflow import pendingacls
 from hubs.widgets.workflow import updates2stable
@@ -29,6 +30,7 @@ registry = {
     'feed': feed,
     'subscriptions': subscriptions,
     'cobwebs': cobwebs,
+    'meetings': meetings,
 
     'workflow.pendingacls': pendingacls,
     'workflow.updates2stable': updates2stable,
