@@ -12,10 +12,14 @@ template = jinja2.Template("""
 <ul class="media-list">
     <li class="media">
         <div class="media-left">
-            <img class="media-object square-32" src="{{cobweb_icon}}"/>
+            <img class="media-object square-32" src="{{icon}}"/>
         </div>
         <div class="media-body">
+        {% if archived %}
+            This hub has been archived and locked.
+        {% else %}
             Cobweb alert!  This hub was last active {{then}}.
+        {% endif %}
         </div>
     </li>
 </ul>
@@ -25,12 +29,16 @@ template = jinja2.Template("""
 
 def data(session, widget):
     days = widget.hub.days_idle
-    old = days > 31
+    archived = widget.hub.archived
+    old = days > 31 or archived
     then = datetime.datetime.utcnow() - datetime.timedelta(days=days)
     then = arrow.get(then).humanize()
     import flask
-    cobweb_icon = flask.url_for('static', filename='img/cobweb.png')
-    return dict(old=old, days=days, then=then, cobweb_icon=cobweb_icon)
+    if archived:
+        icon = flask.url_for('static', filename='img/archived.png')
+    else:
+        icon = flask.url_for('static', filename='img/cobweb.png')
+    return dict(old=old, days=days, then=then, icon=icon, archived=archived)
 
 
 #@hint(topics=[_('hubs.widget.update')])
