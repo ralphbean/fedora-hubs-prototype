@@ -35,7 +35,7 @@ template = jinja2.Template("""
     <div class="media">
       <div class="media-left">
         <a href="{{match['link']}} target="_blank">
-          <img class="media-object img-responsive square-32 img-circle" src="{{match['secondary_icon']}}">
+          <img class="media-object square-32 img-circle" src="{{match['secondary_icon']}}">
         </a>
       </div>
       <div class="media-body">

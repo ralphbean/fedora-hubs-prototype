@@ -20,7 +20,7 @@ template = jinja2.Template("""
 {% for acl in pending_acls %}
     <li class="media">
         <div class="media-left">
-            <img class="media-object img-responsive img-circle" src="{{acl['avatar']}}"/>
+            <img class="media-object img-circle" src="{{acl['avatar']}}"/>
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{acl['user']}} is {{acl['status']}}</h4>

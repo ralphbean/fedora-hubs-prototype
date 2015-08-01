@@ -8,7 +8,7 @@ import hubs.validators as validators
 
 
 template = jinja2.Template("""
-<img class="img-responsive img-circle center-block" src="{{avatar}}">
+<img class="img-circle center-block" src="{{avatar}}">
 """)
 
 #from hubs.widgets.chrome import panel
