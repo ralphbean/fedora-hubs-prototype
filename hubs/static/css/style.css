@@ -296,6 +296,10 @@ font-size: 32pt;
     display: inline-block;
 }
 
+.dropdown-menu {
+    border-radius: 0px !important;
+}
+
 .navbar-nav > li.idle-none    > a { }
 .navbar-nav > li.idle-day     > a { }
 .navbar-nav > li.idle-week    > a { }
